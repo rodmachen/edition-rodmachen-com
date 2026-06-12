@@ -79,7 +79,7 @@ Bump `astro`, `@astrojs/vercel`, `@astrojs/rss` to latest v5-compatible versions
 
 - **Verify:** `npm run build`, `npx vitest run`, `npx astro check` green; a built post page in `dist/` still contains Cloudinary `<figure>`/srcset markup.
 
-## Step 4: Content model — remove essay, add draft filtering
+## Step 4: Content model — remove essay, add draft filtering ✅
 
 - **Model/effort:** Sonnet / medium — (a) low ambiguity (decisions made), (b) no unfamiliar internals, (c) moderate compounding risk: every page reads this model, (d) verifiable by build output + tests. TDD makes this safe at medium.
 - **Context-clear:** no
