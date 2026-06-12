@@ -123,7 +123,7 @@ Full token rework from the chosen mockup: color scheme custom properties with `p
 
 - **Verify:** toggle persists across reloads; no white flash on hard reload in dark mode (DevTools throttling check); `npm run build` + vitest green.
 
-## Step 8: Home page rebuild
+## Step 8: Home page rebuild ✅
 
 - **Model/effort:** Opus / high — (a) the flagship page; layout judgment within the chosen direction, (b) low, (c) moderate, (d) visual quality hard to verify mechanically. Use the frontend-design skill.
 - **Context-clear:** no

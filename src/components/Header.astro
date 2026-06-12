@@ -28,7 +28,7 @@ const year = new Date().getFullYear();
 
     {home ? (
       <>
-        <a href="/" class="nameplate">Edition</a>
+        <h1 class="nameplate-h1"><a href="/" class="nameplate">Edition</a></h1>
         <p class="subhead">Rod Machen &middot; Writing on Film, Food, Music &amp; the Examined Life</p>
       </>
     ) : (
@@ -95,6 +95,11 @@ const year = new Date().getFullYear();
   /* home front-page nameplate */
   .masthead.home {
     padding-top: 1.6rem;
+  }
+
+  .nameplate-h1 {
+    margin: 0;
+    font-weight: inherit;
   }
 
   .masthead.home .nameplate {
