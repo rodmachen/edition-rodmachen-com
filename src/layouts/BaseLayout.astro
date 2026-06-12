@@ -7,8 +7,13 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
-  /** 'home' renders the full front-page nameplate and an unconstrained main. */
-  variant?: 'home' | 'default';
+  /**
+   * 'home' — full front-page nameplate (as the page <h1>) + unconstrained main.
+   * 'section' — same full-width nameplate visual, but the nameplate is NOT the
+   *   page heading (the section page supplies its own <h1>).
+   * 'default' — compact masthead + constrained main.
+   */
+  variant?: 'home' | 'section' | 'default';
 }
 
 const {
@@ -19,7 +24,8 @@ const {
 } = Astro.props;
 
 const canonicalUrl = Astro.url.href;
-const isHome = variant === 'home';
+const isFullWidth = variant === 'home' || variant === 'section';
+const headingNameplate = variant === 'home';
 ---
 
 <!DOCTYPE html>
@@ -84,11 +90,12 @@ const isHome = variant === 'home';
   {ogImage && <meta name="twitter:image" content={ogImage} />}
 </head>
 <body>
-  <Header home={isHome} />
-  {isHome ? (
-    <main><slot /></main>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <Header home={isFullWidth} headingNameplate={headingNameplate} />
+  {isFullWidth ? (
+    <main id="main"><slot /></main>
   ) : (
-    <main class="container"><slot /></main>
+    <main id="main" class="container"><slot /></main>
   )}
   <Footer />
 </body>

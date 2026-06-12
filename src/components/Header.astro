@@ -2,11 +2,13 @@
 import ThemeToggle from './ThemeToggle.astro';
 
 interface Props {
-  /** Render the full front-page nameplate (home only) vs. the compact bar. */
+  /** Render the full front-page nameplate vs. the compact bar. */
   home?: boolean;
+  /** Wrap the full nameplate in <h1> (true only when it is the page heading). */
+  headingNameplate?: boolean;
 }
 
-const { home = false } = Astro.props;
+const { home = false, headingNameplate = home } = Astro.props;
 
 const nav = [
   { label: 'Newsletter', href: '/newsletter/' },
@@ -28,7 +30,11 @@ const year = new Date().getFullYear();
 
     {home ? (
       <>
-        <h1 class="nameplate-h1"><a href="/" class="nameplate">Edition</a></h1>
+        {headingNameplate ? (
+          <h1 class="nameplate-h1"><a href="/" class="nameplate">Edition</a></h1>
+        ) : (
+          <div class="nameplate-h1"><a href="/" class="nameplate">Edition</a></div>
+        )}
         <p class="subhead">Rod Machen &middot; Writing on Film, Food, Music &amp; the Examined Life</p>
       </>
     ) : (

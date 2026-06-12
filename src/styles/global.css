@@ -14,6 +14,9 @@
 }
 
 :root {
+  /* Native form controls, scrollbars, and UA defaults follow the theme. */
+  color-scheme: light;
+
   /* --- Type families ------------------------------------------------- */
   --font-display: 'Fraunces', Georgia, 'Times New Roman', serif; /* masthead, headlines */
   --font-text: 'Newsreader', 'Iowan Old Style', Georgia, serif;  /* body prose */
@@ -44,14 +47,17 @@
   --ink-soft: #4a4239;
   --rule: #cabf9f;
   --rule-soft: #ddd4bd;
+  /* Accents are darkened from the mockup so small metadata text, links, and
+     chips meet WCAG AA (4.5:1) on both paper tones; large display headings keep
+     the warm Ledger character. oxblood/taupe already passed and are unchanged. */
   --accent: #8a2b1f;     /* oxblood */
-  --accent-2: #b8654a;   /* clay */
-  --gold: #9a7b32;
+  --accent-2: #9c4d34;   /* clay */
+  --gold: #7a6122;
 
   /* per-section accents — light */
   --accent-newsletter: #8a2b1f; /* oxblood */
-  --accent-articles: #b8654a;   /* clay */
-  --accent-reviews: #9a7b32;    /* ochre/gold */
+  --accent-articles: #9c4d34;   /* clay */
+  --accent-reviews: #7a6122;    /* ochre/gold */
   --accent-bylines: #6f6450;    /* muted taupe */
 
   /* --- Legacy aliases (consumed by not-yet-restyled pages/components) - */
@@ -69,6 +75,7 @@
 
 /* --- Color: dark (warm ink-at-night) --------------------------------- */
 html[data-theme='dark'] {
+  color-scheme: dark;
   --paper: #16130f;
   --paper-2: #1f1a14;
   --ink: #ece4d2;
@@ -87,6 +94,7 @@ html[data-theme='dark'] {
 
 @media (prefers-color-scheme: dark) {
   html:not([data-theme]) {
+    color-scheme: dark;
     --paper: #16130f;
     --paper-2: #1f1a14;
     --ink: #ece4d2;
@@ -131,6 +139,27 @@ a:hover {
   color: var(--accent);
 }
 
+/* Keyboard focus: links use color:inherit, so hover color is no focus signal.
+   A visible outline is required for keyboard navigation in both themes. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+/* Honor reduced-motion: the UI only uses short color/background transitions,
+   but disable them (and any animation) for users who request less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 600;
@@ -169,6 +198,24 @@ hr {
   border: none;
   border-top: var(--rule-thin) solid var(--rule);
   margin: 2rem 0;
+}
+
+/* Skip link: hidden until keyboard-focused, then pinned to the top-left. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.skip-link:focus {
+  left: 0;
+  color: var(--paper);
 }
 
 /* --- Layout helpers -------------------------------------------------- */
