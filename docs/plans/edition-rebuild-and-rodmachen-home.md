@@ -154,7 +154,7 @@ Real section indexes for `/newsletter/`, `/articles/`, `/reviews/` with per-sect
 
 - **Verify:** build green; spot-check in both themes: a newsletter post with images (Cloudinary figures intact), a review, archive page 2, a tag page; OG meta tags present on a post page.
 
-## Step 11: Polish + design/accessibility audit
+## Step 11: Polish + design/accessibility audit ✅
 
 - **Model/effort:** Opus / high — (a) audit findings require judgment to triage, (b) low, (c) low, (d) accessibility/contrast correctness benefits from the strongest review. Run the **web-design-guidelines skill**.
 - **Context-clear:** no
