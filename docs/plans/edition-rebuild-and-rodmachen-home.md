@@ -187,7 +187,7 @@ Sync the stabilized tokens (from `src/styles/global.css`) and component patterns
 
 - **Verify:** sync completes; token/component cards visible in the claude.ai/design project.
 
-## Step 14: README + PR description final pass
+## Step 14: README + PR description final pass ✅
 
 - **Model/effort:** Sonnet / low — (a–d) all low; documentation.
 - **Context-clear:** no
