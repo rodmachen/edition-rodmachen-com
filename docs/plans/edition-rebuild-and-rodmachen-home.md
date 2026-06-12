@@ -165,7 +165,7 @@ Fix contrast/focus/touch-target issues in both themes; confirm RSS hrefs, OG/Twi
 
 - **Verify:** audit findings addressed or explicitly waived; `npx vitest run`, `npx astro check`, `npm run build` green; `dist/sitemap-index.xml` exists if sitemap added.
 
-## Step 12: rodmachen.com static page
+## Step 12: rodmachen.com static page ✅
 
 - **Model/effort:** Opus / high — (a) standalone visual design (own distinct look), (b) none, (c) low, (d) subjective quality. Use the frontend-design skill, building from the chosen Step 6 mockup.
 - **Context-clear:** yes — distinct site, distinct design context.
