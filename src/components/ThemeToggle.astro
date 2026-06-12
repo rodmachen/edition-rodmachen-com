@@ -1,0 +1,88 @@
+---
+// Segmented Day/Night control. The pre-paint theme is set by the inline
+// bootstrap script in BaseLayout (no FOUC); this component only syncs the
+// button state on load and handles user toggles + persistence.
+---
+
+<div class="theme-toggle" role="group" aria-label="Color theme">
+  <button type="button" data-theme-set="light" aria-pressed="false">Day</button>
+  <button type="button" data-theme-set="dark" aria-pressed="false">Night</button>
+</div>
+
+<script is:inline>
+  (function () {
+    var root = document.documentElement;
+    var buttons = document.querySelectorAll('.theme-toggle button');
+
+    function current() {
+      var attr = root.getAttribute('data-theme');
+      if (attr === 'dark' || attr === 'light') return attr;
+      return window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
+
+    function sync(mode) {
+      buttons.forEach(function (b) {
+        b.setAttribute(
+          'aria-pressed',
+          b.getAttribute('data-theme-set') === mode ? 'true' : 'false',
+        );
+      });
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', mode === 'dark' ? '#16130f' : '#f4efe4');
+    }
+
+    function set(mode) {
+      root.setAttribute('data-theme', mode);
+      try {
+        localStorage.setItem('theme', mode);
+      } catch (e) {}
+      sync(mode);
+    }
+
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        set(b.getAttribute('data-theme-set'));
+      });
+    });
+
+    sync(current());
+  })();
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    border: var(--rule-thin) solid var(--ink);
+    font-family: var(--font-mono);
+  }
+
+  .theme-toggle button {
+    background: transparent;
+    border: 0;
+    color: var(--ink-soft);
+    font: inherit;
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.5rem 0.7rem;
+    min-height: 32px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .theme-toggle button + button {
+    border-left: var(--rule-thin) solid var(--ink);
+  }
+
+  .theme-toggle button[aria-pressed='true'] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .theme-toggle button:hover:not([aria-pressed='true']) {
+    color: var(--ink);
+  }
+</style>

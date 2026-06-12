@@ -101,7 +101,7 @@ Generate routes from `CATEGORY_CONFIG[].path` (plural). Move byline index to `/b
 
 - **Verify:** `npm run build`; `dist/articles/`, `dist/reviews/`, `dist/newsletter/` contain post folders; no `dist/article/` or `dist/review/`; `dist/rss.xml` contains no `/article/` hrefs; vitest green. On the Vercel preview deploy, `curl -sI` an old singular URL → 301/308 to plural.
 
-## Step 6: Design mockups — USER CHECKPOINT
+## Step 6: Design mockups — USER CHECKPOINT ✅
 
 - **Model/effort:** Opus / high — (a) high ambiguity: open-ended visual design, (b) n/a, (c) high leverage: everything downstream builds on the chosen direction, (d) correctness is subjective — needs the strongest design model. Use the **frontend-design skill**.
 - **Context-clear:** **yes** — new chapter; prior dependency/refactor output is noise for design work.
@@ -112,7 +112,7 @@ Each edition mockup shows home (Big 3 prominent, bylines secondary, archive de-e
 
 - **Verify:** each file opens in a browser and renders sensibly at 375px and 1280px; Rod has picked a direction for each site.
 
-## Step 7: Design tokens + layout shell (dark mode)
+## Step 7: Design tokens + layout shell (dark mode) ✅
 
 - **Model/effort:** Opus / high — (a) translating a mockup into a token system involves judgment, (b) FOUC-free theme bootstrapping is fiddly, (c) very high compounding risk: every later step consumes these tokens, (d) visual correctness is hard to auto-verify.
 - **Context-clear:** yes — start of the build-out chapter; only the chosen mockup matters.
