@@ -7,6 +7,8 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_CLOUDINARY_CLOUD_NAME: dke4phurv
     steps:
       - uses: actions/checkout@v4
 
