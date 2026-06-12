@@ -90,7 +90,7 @@ Drop `essay` from schema enum and `CATEGORY_CONFIG`. Add `path` field per catego
 
 - **Verify:** `npx vitest run` green; after `npm run build`, no `a-week-of-tennis` page and no `dist/essay/` directory.
 
-## Step 5: URL structure + redirects
+## Step 5: URL structure + redirects ✅
 
 - **Model/effort:** Sonnet / medium — (a) low ambiguity, (b) Vercel redirect semantics with `trailingSlash: 'always'` need care, (c) high compounding risk if old URLs 404 (SEO), (d) verifiable via dist inspection + redirect checks on preview deploy. Medium with TDD on href generation.
 - **Context-clear:** no
