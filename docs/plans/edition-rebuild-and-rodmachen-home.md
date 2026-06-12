@@ -176,7 +176,7 @@ Plain HTML/CSS, no build step. Links: edition.rodmachen.com, code.rodmachen.com,
 
 - **Verify:** `open home/index.html` renders correctly at 375px and 1280px in both schemes; all links resolve (curl each external URL → 200).
 
-## Step 13: Claude Design sync
+## Step 13: Claude Design sync ✅
 
 - **Model/effort:** Sonnet / medium — (a) low ambiguity, (b) DesignSync flow has its own guardrails (list → finalize_plan → write), (c) low, (d) verifiable in the claude.ai/design UI.
 - **Context-clear:** no
