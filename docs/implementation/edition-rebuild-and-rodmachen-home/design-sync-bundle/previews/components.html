@@ -1,0 +1,69 @@
+<!-- @dsCard group="Components" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edition — Component patterns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; padding: 28px; background: #f4efe4; color: #1c1815; font-family: 'Newsreader', serif; font-size: 1.05rem; }
+  .spec { font-family: 'Spline Sans Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #4a4239; margin: 30px 0 10px; }
+  .spec:first-child { margin-top: 0; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: #8a2b1f; }
+  /* Header nav (inner-page variant) */
+  .masthead { border-bottom: 2px solid #1c1815; padding-bottom: 10px; display: flex; align-items: baseline; gap: 22px; flex-wrap: wrap; }
+  .nameplate { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.7rem; }
+  nav { display: flex; gap: 18px; font-family: 'Spline Sans Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
+  /* ThemeToggle segmented control */
+  .toggle { margin-left: auto; display: inline-flex; border: 1px solid #cabf9f; border-radius: 2px; font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+  .toggle button { all: unset; padding: 7px 12px; min-height: 18px; cursor: pointer; }
+  .toggle .on { background: #1c1815; color: #f4efe4; }
+  /* PostList: 2-col dispatch catalog row (Newsletter/Articles) */
+  .dispatch { border-bottom: 1px solid #ddd4bd; padding: 12px 0; display: grid; grid-template-columns: 84px 1fr; gap: 14px; align-items: baseline; }
+  .id { font-family: 'Spline Sans Mono', monospace; font-size: 11px; color: #8a2b1f; letter-spacing: .08em; }
+  .dispatch h3 { margin: 0; font-family: 'Fraunces', serif; font-weight: 400; font-size: 1.25rem; }
+  .meta { font-family: 'Spline Sans Mono', monospace; font-size: 11px; color: #4a4239; letter-spacing: .08em; text-transform: uppercase; }
+  /* Reviews ledger table: 3-col */
+  table { width: 100%; border-collapse: collapse; border-top: 2px solid #1c1815; border-bottom: 2px solid #1c1815; }
+  td { padding: 10px 8px; border-bottom: 1px solid #ddd4bd; }
+  tr:last-child td { border-bottom: none; }
+  td.id { width: 64px; color: #7a6122; }
+  td.date { text-align: right; font-family: 'Spline Sans Mono', monospace; font-size: 11px; color: #4a4239; width: 110px; }
+  td.title { font-family: 'Fraunces', serif; font-size: 1.15rem; }
+  td .cat { display: block; font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #4a4239; }
+</style>
+</head>
+<body>
+  <div class="spec">Header (inner variant) + nav + ThemeToggle segmented control</div>
+  <header class="masthead">
+    <span class="nameplate">Edition</span>
+    <nav><a href="#">Newsletter</a><a href="#">Articles</a><a href="#">Reviews</a><a href="#">Bylines</a></nav>
+    <span class="toggle"><button class="on">Day</button><button>Night</button></span>
+  </header>
+
+  <div class="spec">PostList — 2-col dispatch catalog row (Newsletter №NNN / Articles A·NN)</div>
+  <article class="dispatch">
+    <span class="id">№ 042</span>
+    <div>
+      <h3><a href="#">Sunday Brunch with Franklin &amp; Friends</a></h3>
+      <span class="meta">Dispatch · 2014.02.20</span>
+    </div>
+  </article>
+  <article class="dispatch">
+    <span class="id">A·17</span>
+    <div>
+      <h3><a href="#">In Defense of Long Lines, Sort Of</a></h3>
+      <span class="meta">Essay · 2014.04.02</span>
+    </div>
+  </article>
+
+  <div class="spec">Reviews — 3-col ruled ledger table (id · title/category · date)</div>
+  <table>
+    <tr><td class="id">R·07</td><td class="title"><a href="#">The Grand Budapest Hotel</a><span class="cat">Film</span></td><td class="date">2014.03.27</td></tr>
+    <tr><td class="id">R·08</td><td class="title"><a href="#">Game of Thrones: Two Swords</a><span class="cat">Television</span></td><td class="date">2014.04.07</td></tr>
+  </table>
+</body>
+</html>

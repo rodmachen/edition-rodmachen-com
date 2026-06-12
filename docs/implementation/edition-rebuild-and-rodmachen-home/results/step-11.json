@@ -1,0 +1,30 @@
+{
+  "step": 11,
+  "status": "success",
+  "commit": "f9e68f44ec3f817b33210de4165e122c1172debf",
+  "ci_run_url": "https://github.com/rodmachen/edition-rodmachen-com/actions/runs/27399871696",
+  "findings_fixed": [
+    "Light-theme accent contrast: clay (articles ~3.4:1), ochre (reviews ~3.2:1) and gold metadata (~3.2:1) failed WCAG AA for small labels/links/chips. Darkened to AA on both paper tones (clay #9c4d34 = 5.20/4.75, ochre+gold #7a6122 = 5.14/4.70). Oxblood and taupe already passed; all dark-theme accents already pass.",
+    "Heading hierarchy on section index pages: emitted two <h1> (front-page nameplate + section name). Added a BaseLayout 'section' variant that keeps the full-width nameplate visual but renders it as a <div>, so the section name is the sole <h1>.",
+    "Heading hierarchy on post/newsletter pages: issues use `#` as in-issue section headers, producing up to nine <h1>. Added src/plugins/remark-demote-headings.ts (content `#`->h2, capped at h6) so the post title is the only <h1>.",
+    "Focus visibility: links use color:inherit so keyboard focus was invisible. Added a global :focus-visible outline (2px accent, offset) in both themes.",
+    "Added a skip-to-content link to <main id=\"main\"> (visually hidden until focused).",
+    "Reduced motion: added a prefers-reduced-motion:reduce block neutralising the short colour/background transitions.",
+    "color-scheme set to light/dark so native form controls and scrollbars follow the theme.",
+    "Touch targets: footer link vertical padding bumped (~22px -> ~27px tall) to clear the 24px minimum.",
+    "Added @astrojs/sitemap integration (site https://edition.rodmachen.com); dist/sitemap-index.xml now emitted."
+  ],
+  "findings_waived": [
+    {"finding": "/blog page has no <h1>", "reason": "It is a meta-refresh redirect stub, not a content page."},
+    {"finding": "Newsletter post bodies skip from h2 to h4", "reason": "Source content authors `#` then `###` (skipping `##`); the demotion preserves that skip. Rewriting per-issue heading semantics is content editing, out of scope for a polish pass. The critical multiple-h1 issue is resolved."},
+    {"finding": "Editorial nav links and the Day/Night theme toggle are below the 44px ideal touch target", "reason": "All are >=24px (toggle 32px min-height); the dense broadsheet nav would be visually distorted by 44px targets. WIG minimum (24px) is met."},
+    {"finding": "GitHub Actions uses actions/checkout@v4 / setup-node@v4 (Node 20 deprecation notice)", "reason": "Pre-existing CI config, unrelated to Step 11 scope; only a non-blocking deprecation warning."}
+  ],
+  "decisions": [
+    "Fixed contrast by darkening accent tokens within the same hue family rather than recolouring, preserving the Ledger Broadsheet identity; large display headings keep their warm tone and still clear 3:1.",
+    "Decoupled nameplate heading semantics from its full-width visual via a new 'section' BaseLayout variant (headingNameplate prop on Header) instead of demoting the section <h1>, keeping the section name as the page's primary heading.",
+    "Chose a repo-wide remark heading-demotion plugin over editing 11+ markdown files; pure heading-level shift, lowest-risk way to guarantee a single <h1> per post.",
+    "Confirmed (no change needed): RSS feed hrefs use plural section paths; OG + Twitter card meta present on post pages with Cloudinary OG images; fonts already load with display=swap and preconnect."
+  ],
+  "blockers": []
+}

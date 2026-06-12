@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!--
+  Option C — "The Almanac": A warm, color-blocked editorial zine. High-contrast DM Serif Display headlines over Hanken Grotesk text, a sun-baked palette of terracotta, ochre,
+  ink-green and bone. Asymmetric, expressive, blocks of color carrying each of the Big 3. Personable and contemporary — a magazine with a pulse. Light by default, dusk toggle.
+-->
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>edition.rodmachen.com — Option C · The Almanac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bone:#f6efe3; --bone-2:#efe5d3; --ink:#231a17; --ink-soft:#6a5d52;
+  --terra:#c9572f; --terra-deep:#a8431f; --ochre:#e0a52e; --forest:#2f4a3a; --forest-2:#3d5e49;
+  --plum:#7a3b52; --card:#fffaf0; --line:#e0d2bb;
+  --serif:'DM Serif Display',Georgia,serif; --sans:'Hanken Grotesk','Helvetica Neue',sans-serif;
+}
+html[data-theme="dark"]{
+  --bone:#1a1512; --bone-2:#221b16; --ink:#f3e9da; --ink-soft:#b29f8c;
+  --terra:#e87a4d; --terra-deep:#d2622f; --ochre:#edbb4e; --forest:#7fa98c; --forest-2:#6c9a7a;
+  --plum:#cf8aa3; --card:#241c17; --line:#3a2e25;
+}
+@media (prefers-color-scheme:dark){html:not([data-theme]){--bone:#1a1512;--bone-2:#221b16;--ink:#f3e9da;--ink-soft:#b29f8c;--terra:#e87a4d;--terra-deep:#d2622f;--ochre:#edbb4e;--forest:#7fa98c;--forest-2:#6c9a7a;--plum:#cf8aa3;--card:#241c17;--line:#3a2e25;}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bone);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1200px;margin:0 auto;padding:0 26px}
+/* toggle */
+.toggle{position:fixed;top:16px;right:16px;z-index:60;display:flex;background:var(--card);border:2px solid var(--ink);border-radius:40px;overflow:hidden}
+.toggle button{background:transparent;border:0;color:var(--ink-soft);padding:7px 15px;cursor:pointer;font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:.04em}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--bone)}
+/* header */
+.top{padding:30px 0 8px}
+.top .row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.brand{font-family:var(--serif);font-size:30px;line-height:1}
+.brand i{color:var(--terra)}
+nav.menu{display:flex;flex-wrap:wrap;gap:4px}
+nav.menu a{font-weight:700;font-size:13px;letter-spacing:.02em;padding:7px 13px;border-radius:30px;color:var(--ink-soft);transition:.18s}
+nav.menu a:hover{background:var(--ink);color:var(--bone)}
+.hero{padding:18px 0 30px;border-bottom:2px solid var(--ink)}
+.hero h1{font-family:var(--serif);font-size:clamp(44px,8.5vw,96px);line-height:.98;letter-spacing:-.01em;max-width:14ch}
+.hero h1 i{font-style:italic;color:var(--terra)}
+.hero .sub{margin-top:16px;max-width:48ch;color:var(--ink-soft);font-size:18px;font-weight:500}
+.hero .sub b{color:var(--forest);font-weight:700}
+/* big3 blocks */
+.blocks{padding:34px 0 10px;display:grid;gap:22px;grid-template-columns:1fr}
+@media(min-width:900px){.blocks{grid-template-columns:1.35fr 1fr 1fr;align-items:start}}
+.block{border-radius:18px;padding:26px 24px 28px;position:relative;overflow:hidden}
+.block.nl{background:var(--forest);color:#f6efe3}
+.block.ar{background:var(--card);border:2px solid var(--ink)}
+.block.rv{background:var(--terra);color:#fff5ec}
+.block .bh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+.block .bh h2{font-family:var(--serif);font-size:30px;line-height:1}
+.block .bh .pill{font-weight:800;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.85;border:1.5px solid currentColor;border-radius:20px;padding:3px 9px}
+.block .it{display:block;padding:15px 0;border-top:1.5px solid;border-color:rgba(255,255,255,.22)}
+.block.ar .it{border-color:var(--line)}
+.block .it:first-of-type{border-top:0}
+.block .it .d{font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.78;margin-bottom:3px}
+.block .it h3{font-family:var(--serif);font-size:22px;line-height:1.06}
+.block.ar .it h3{color:var(--ink)}
+.block .it.lead h3{font-size:30px}
+.block .it p{font-size:14px;margin-top:5px;opacity:.85;font-weight:500}
+.block .it:hover h3{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.block .badge{position:absolute;top:-22px;right:-22px;width:96px;height:96px;border-radius:50%;background:var(--ochre);opacity:.9}
+.block.ar .badge{background:var(--plum)}
+.block.rv .badge{background:var(--ochre)}
+/* bylines */
+.bylines{margin:28px 0;border-radius:18px;border:2px dashed var(--ink);padding:22px 24px}
+.bylines .h{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px;margin-bottom:12px}
+.bylines .h .tag{font-family:var(--sans);font-weight:800;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--terra);border:1.5px solid var(--terra);border-radius:20px;padding:3px 10px}
+.bylines .list{display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:740px){.bylines .list{grid-template-columns:1fr 1fr}}
+.bylines a{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding-bottom:9px;border-bottom:1.5px solid var(--line);font-weight:600}
+.bylines a:hover{color:var(--terra)}
+.bylines a .src{font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ochre);white-space:nowrap}
+/* footer */
+footer{padding:24px 0 60px;border-top:2px solid var(--ink);margin-top:8px}
+footer .grid{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;align-items:center}
+footer .links a{font-weight:700;font-size:13px;color:var(--ink-soft);margin-right:18px}
+footer .links a:hover{color:var(--terra)}
+footer .topics{display:flex;flex-wrap:wrap;gap:7px}
+footer .topics a{font-weight:700;font-size:12px;background:var(--bone-2);border-radius:20px;padding:5px 12px;color:var(--ink-soft)}
+footer .topics a:hover{background:var(--ochre);color:var(--ink)}
+/* divider */
+.divider{background:var(--ink);color:var(--bone);text-align:center;font-family:var(--serif);font-size:15px;letter-spacing:.04em;padding:13px}
+.divider i{color:var(--ochre);font-style:italic}
+/* reviews index */
+.idx{padding:44px 0 6px}
+.idx .eye{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--terra)}
+.idx h1{font-family:var(--serif);font-size:clamp(46px,9vw,90px);line-height:.96;margin:6px 0 0}
+.idx h1 i{font-style:italic;color:var(--forest)}
+.idx .filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.idx .filters a{font-weight:700;font-size:13px;border:2px solid var(--ink);border-radius:30px;padding:6px 16px;color:var(--ink-soft)}
+.idx .filters a.on{background:var(--ink);color:var(--bone)}
+.cards{padding:24px 0 54px;display:grid;gap:18px;grid-template-columns:1fr}
+@media(min-width:680px){.cards{grid-template-columns:1fr 1fr}}
+.rcard{background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:8px;transition:transform .15s}
+.rcard:hover{transform:translateY(-3px)}
+.rcard .cat{align-self:flex-start;font-weight:800;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--terra);border-radius:20px;padding:4px 11px}
+.rcard .cat.tv{background:var(--forest)}.rcard .cat.food{background:var(--ochre);color:var(--ink)}.rcard .cat.dance{background:var(--plum)}
+.rcard h3{font-family:var(--serif);font-size:27px;line-height:1.04}
+.rcard p{color:var(--ink-soft);font-weight:500;font-size:15px}
+.rcard .date{margin-top:auto;font-weight:700;font-size:12px;color:var(--ink-soft);letter-spacing:.04em}
+/* post */
+.post{padding:48px 0 80px}
+.post .ph-head{max-width:780px}
+.post .ph-head .cat{font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:12px;color:var(--terra)}
+.post .ph-head h1{font-family:var(--serif);font-size:clamp(42px,8vw,80px);line-height:.98;margin:10px 0 14px}
+.post .ph-head .by{font-weight:700;color:var(--ink-soft);font-size:14px}
+.post .body{max-width:660px;margin-top:34px;font-size:20px;line-height:1.72}
+.post .body p{margin-bottom:1.3rem}
+.post .body em{font-style:italic}
+.post .body .lead-p{font-size:24px;line-height:1.5;font-weight:500}
+.post .body figure{margin:38px 0}
+.post .body figure .ph{aspect-ratio:3/2;border-radius:14px;background:
+  radial-gradient(120% 120% at 0% 0%,var(--ochre),transparent 55%),
+  radial-gradient(120% 120% at 100% 100%,var(--terra),var(--forest));
+  display:flex;align-items:flex-end;padding:18px}
+.post .body figure .ph span{font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fff;opacity:.85}
+.post .body figcaption{font-weight:600;font-size:14px;color:var(--ink-soft);margin-top:10px;padding-left:16px;border-left:3px solid var(--terra)}
+.post .body blockquote{margin:34px 0;padding:0 0 0 26px;border-left:6px solid var(--ochre)}
+.post .body blockquote p{font-family:var(--serif);font-size:30px;line-height:1.18;color:var(--ink)}
+.post .body blockquote cite{display:block;font-family:var(--sans);font-weight:700;font-style:normal;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--terra);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="toggle" role="group" aria-label="Color theme">
+  <button id="tL" aria-pressed="true">Sun</button>
+  <button id="tD" aria-pressed="false">Dusk</button>
+</div>
+
+<!-- ============ HOME ============ -->
+<header class="top wrap">
+  <div class="row">
+    <div class="brand">The <i>Edition</i></div>
+    <nav class="menu">
+      <a href="#">Newsletter</a><a href="#reviews">Articles</a><a href="#reviews">Reviews</a><a href="#">Bylines</a><a href="#">Archive</a><a href="#">Topics</a>
+    </nav>
+  </div>
+</header>
+<section class="hero wrap">
+  <h1>Notes on film, food, music &amp; the <i>examined life.</i></h1>
+  <p class="sub">By <b>Rod Machen</b> — writer and engineering manager in Austin, Texas. A decade of newsletters, criticism, and dispatches, kept in one place.</p>
+</section>
+
+<main class="wrap">
+  <div class="blocks">
+    <section class="block nl"><span class="badge"></span>
+      <div class="bh"><h2>Newsletter</h2><span class="pill">Hangman Chronicles</span></div>
+      <a class="it lead" href="#"><div class="d">May 27, 2025</div><h3>Sunday Brunch with Franklin &amp; Friends</h3><p>Once again — the pitmaster opens the gates, and a city lines up.</p></a>
+      <a class="it" href="#"><div class="d">Feb 25, 2024</div><h3>ATX Open 2024: Opening Weekend</h3></a>
+      <a class="it" href="#"><div class="d">Mar 7, 2023</div><h3>Tennis, Tennis &amp; More Tennis</h3></a>
+      <a class="it" href="#"><div class="d">Jan 9, 2023</div><h3>Yellowstone, Debussy &amp; the Love</h3></a>
+    </section>
+
+    <section class="block ar"><span class="badge"></span>
+      <div class="bh"><h2>Articles</h2><span class="pill">Essays</span></div>
+      <a class="it lead" href="#"><div class="d">Feb 25, 2014 · Music</div><h3>Neutral Milk Hotel</h3><p>A retro-scenester adventure.</p></a>
+      <a class="it" href="#"><div class="d">Apr 23, 2014 · TV</div><h3>Mad Men, Mad Women</h3></a>
+      <a class="it" href="#"><div class="d">Mar 18, 2014 · Festival</div><h3>SXSW: Long Live SXSW</h3></a>
+      <a class="it" href="#"><div class="d">Feb 11, 2014 · Essay</div><h3>In Defense of Long Lines</h3></a>
+    </section>
+
+    <section class="block rv"><span class="badge"></span>
+      <div class="bh"><h2>Reviews</h2><span class="pill">Film · TV · Food</span></div>
+      <a class="it lead" href="#post"><div class="d">Mar 27, 2014 · Film</div><h3>The Grand Budapest Hotel</h3><p>Anderson at full bloom.</p></a>
+      <a class="it" href="#"><div class="d">Apr 7, 2014 · TV</div><h3>Game of Thrones: Two Swords</h3></a>
+      <a class="it" href="#"><div class="d">Feb 20, 2014 · Food</div><h3>First Look: Kerlin BBQ</h3></a>
+      <a class="it" href="#"><div class="d">Dec 26, 2013 · Dance</div><h3>Ballet Austin's Nutcracker</h3></a>
+    </section>
+  </div>
+
+  <section class="bylines">
+    <div class="h"><span class="tag">Bylines</span> <span>Found elsewhere on the web</span></div>
+    <div class="list">
+      <a href="#">Catching Up with Aaron Franklin <span class="src">Austin Chronicle</span></a>
+      <a href="#">Blade Runner 2049: Five Great Things <span class="src">Cinapse</span></a>
+      <a href="#">Was the Foodways Symposium Worth the Price? <span class="src">Austin Chronicle</span></a>
+      <a href="#">If Beale Street Could Talk Is Breathtaking <span class="src">Cinapse</span></a>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap"><div class="grid">
+  <div class="links"><a href="#">Archive</a><a href="#">RSS</a><a href="#">About</a><a href="#">Contact</a></div>
+  <div class="topics">
+    <a href="#">Film</a><a href="#">TV</a><a href="#">BBQ</a><a href="#">Music</a><a href="#">Tennis</a><a href="#">SXSW</a><a href="#">Austin</a><a href="#">Opera</a>
+  </div>
+</div></footer>
+
+<!-- ============ SECTION INDEX ============ -->
+<div class="divider">Section Index — <i>Reviews</i></div>
+<section class="wrap">
+  <div class="idx">
+    <div class="eye">The Edition · Criticism</div>
+    <h1>Reviews <i>&amp; Notices</i></h1>
+    <div class="filters"><a href="#" class="on">All</a><a href="#">Film</a><a href="#">Television</a><a href="#">Food</a><a href="#">Music</a><a href="#">Dance</a></div>
+  </div>
+  <div class="cards">
+    <a class="rcard" href="#post"><span class="cat">Film</span><h3>The Grand Budapest Hotel</h3><p>Wes Anderson builds his most intricate dollhouse yet — and mourns a vanished continent inside it.</p><div class="date">March 27, 2014</div></a>
+    <a class="rcard" href="#"><span class="cat tv">Television</span><h3>Game of Thrones: Two Swords</h3><p>Westeros returns for a new season, knives already drawn.</p><div class="date">April 7, 2014</div></a>
+    <a class="rcard" href="#"><span class="cat food">Food</span><h3>First Look: Kerlin BBQ</h3><p>A trailer on Cesar Chavez quietly raising the bar for the city.</p><div class="date">February 20, 2014</div></a>
+    <a class="rcard" href="#"><span class="cat food">Food</span><h3>Austin Land &amp; Cattle Company</h3><p>An old-school steakhouse that still earns its char.</p><div class="date">February 9, 2014</div></a>
+    <a class="rcard" href="#"><span class="cat dance">Dance</span><h3>Ballet Austin's The Nutcracker</h3><p>Dressing up, and the small annual pleasures of tradition.</p><div class="date">December 26, 2013</div></a>
+    <a class="rcard" href="#"><span class="cat food">Food</span><h3>The Dai Due Breakfast Sandwich</h3><p>A few perfect bites worth crossing town for.</p><div class="date">January 23, 2014</div></a>
+  </div>
+</section>
+
+<!-- ============ POST ============ -->
+<div class="divider">Article — <i>The Grand Budapest Hotel</i></div>
+<article class="post wrap">
+  <div class="ph-head">
+    <div class="cat">Reviews · Film</div>
+    <h1>The Grand Budapest Hotel</h1>
+    <div class="by">By Rod Machen · March 27, 2014</div>
+  </div>
+  <div class="body">
+    <p class="lead-p">My basic inclination is, like many, to like every new film from Wes Anderson. He had me at <em>Bottle Rocket</em>, and even the ones I haven't enjoyed as much haven't pushed me away.</p>
+    <p>So I walked into <em>The Grand Budapest Hotel</em> predisposed to delight, which is a dangerous way to enter a theater. The danger here turns out to be irrelevant. This is Anderson at full bloom: a nested set of stories, a doomed concierge, and a lobby boy whose loyalty becomes the film's beating heart.</p>
+    <figure>
+      <div class="ph"><span>M. Gustave at the front desk</span></div>
+      <figcaption>Ralph Fiennes as M. Gustave H. — the concierge whose manners outlast his world.</figcaption>
+    </figure>
+    <p>The symmetry is doing real work, not just decoration. Every frame is a vitrine, and inside each one Anderson arranges grief and farce with the same careful hand. It should feel airless. It doesn't.</p>
+    <blockquote>
+      <p>The plot is a confection, but the feeling underneath is genuine loss — for a continent, a courtesy, a way of moving through the world.</p>
+      <cite>From the review</cite>
+    </blockquote>
+    <p>By the time the frame stories close, one inside the next, you understand that the whole elaborate machine exists to mourn something specific. That it stays hilarious on the way there is the trick only Anderson seems able to pull.</p>
+  </div>
+</article>
+
+<script>
+(function(){
+  var root=document.documentElement, L=document.getElementById('tL'), D=document.getElementById('tD');
+  function set(mode){
+    root.setAttribute('data-theme',mode);
+    L.setAttribute('aria-pressed', mode==='light');
+    D.setAttribute('aria-pressed', mode==='dark');
+  }
+  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  set(prefersDark ? 'dark' : 'light');
+  L.addEventListener('click', function(){ set('light'); });
+  D.addEventListener('click', function(){ set('dark'); });
+})();
+</script>
+</body>
+</html>

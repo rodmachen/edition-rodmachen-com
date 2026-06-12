@@ -1,0 +1,44 @@
+{
+  "step": 6,
+  "status": "success",
+  "commit": "0a3783db83838d0dd78a13eedc6027164f63d197",
+  "options": {
+    "edition": [
+      {
+        "file": "edition-option-a.html",
+        "name": "The Broadsheet",
+        "summary": "A literary-review masthead in the lineage of NYRB and The Paris Review. Cream paper, ink black, a single oxblood accent, Fraunces display over a Newsreader text column, multi-column print grid. Quiet, authored, and timeless; light by default with a Day/Night toggle."
+      },
+      {
+        "file": "edition-option-b.html",
+        "name": "The Index",
+        "summary": "The writer's archive rendered as a card catalog / database. Monospace structure (IBM Plex Mono) with a tight Archivo grotesque for headlines, near-black canvas, one acid-citron accent, sticky column headers and a tabular reviews index. The engineering-manager's publication; dark by default with a light toggle."
+      },
+      {
+        "file": "edition-option-c.html",
+        "name": "The Almanac",
+        "summary": "A warm, color-blocked editorial zine. High-contrast DM Serif Display headlines over Hanken Grotesk, a sun-baked palette of terracotta, ochre, ink-green and bone, with the Big 3 carried in distinct color blocks and rounded review cards. Personable and contemporary; light by default with a Sun/Dusk toggle."
+      }
+    ],
+    "rodmachen": [
+      {
+        "file": "rodmachen-home-a.html",
+        "name": "The Calling Card",
+        "summary": "A refined, dark editorial hub with an engraved-stationery feel: a high-contrast Bodoni Moda nameplate, warm amber accent, generous negative space, and destinations laid out as a precise numbered index. Literary and understated."
+      },
+      {
+        "file": "rodmachen-home-b.html",
+        "name": "The Signal",
+        "summary": "A terminal-flavored hub for the writer-who-codes: a drifting gradient-mesh background, oversized Archivo wordmark, JetBrains Mono labels, electric-teal accent, and subdomains presented as live 'channel' cards. Playful and technical, a deliberate counterpoint to Home A."
+      }
+    ]
+  },
+  "decisions": [
+    "Pulled real titles, dates, sections, and bylines from src/content/posts and src/content/bylines so Rod evaluates each direction against actual content (e.g. 'Sunday Brunch with Franklin & Friends', 'The Grand Budapest Hotel', Austin Chronicle/Cinapse bylines).",
+    "Made the three edition directions diverge on typographic voice, layout system, and default theme rather than color alone: serif broadsheet (light) vs. monospace index (dark) vs. color-blocked serif/sans zine (light).",
+    "Used the post 'The Grand Budapest Hotel' for the post-page mockup across all three edition files, reusing its real opening lines as body copy plus a figure-with-caption and a blockquote, so the typography is judged on comparable content.",
+    "Gave the two rodmachen.com hubs genuinely different personalities (engraved-literary vs. terminal-atmospheric) so the one-page hub decision is independent of the publication's look.",
+    "Linked the three subdomains to their known destinations (edition/code/photo.rodmachen.com) and left social accounts as placeholder '#' hrefs, per the checkpoint plan."
+  ],
+  "blockers": []
+}

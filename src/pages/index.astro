@@ -1,285 +1,449 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getPostSlug, getPostCategory, getPostsByCategory, CATEGORY_CONFIG } from '../utils/posts';
+import {
+  getPostSlug,
+  getPostCategory,
+  getCategoryPath,
+  getPostsByCategory,
+  getPublishedPosts,
+  CATEGORY_CONFIG,
+} from '../utils/posts';
 
-const posts = await getCollection('posts');
+const posts = getPublishedPosts(await getCollection('posts'));
 const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const grouped = getPostsByCategory(sorted);
 
-const bylines = await getCollection('bylines');
-const sortedBylines = bylines.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const bylines = (await getCollection('bylines')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
 
-const totalItems = sorted.length + sortedBylines.length;
+const totalItems = sorted.length + bylines.length;
 
-// Grid cards: each content category + archive
-type GridCard = {
-  key: string;
-  label: string;
-  description: string;
-  accent: string;
-  href: string;
-  count: number;
-  items: { title: string; subtitle?: string; href: string }[];
-  comingSoon: boolean;
+// Dotted, archival date — mono metadata style (2014.03.27)
+function dot(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}.${m}.${d}`;
+}
+
+function titleCase(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+// The Big 3: prominent section blocks, each with up to 5 recent entries.
+type Section = {
+  key: 'newsletter' | 'article' | 'review';
+  accentVar: string;
+  lede: string;
+  defaultCat: string;
+  prefix: (n: number) => string; // catalog index id
+  pad: number;
 };
 
-const gridCards: GridCard[] = Object.entries(CATEGORY_CONFIG).map(([key, config]) => {
-  if (key === 'byline') {
-    const items = sortedBylines.slice(0, 5).map((b) => ({
-      title: b.data.title,
-      subtitle: b.data.subTitle,
-      href: b.data.url,
-    }));
+const SECTIONS: Section[] = [
+  {
+    key: 'newsletter',
+    accentVar: 'var(--accent-newsletter)',
+    lede: 'The Hangman Chronicles',
+    defaultCat: 'Dispatch',
+    prefix: (n) => `№${String(n).padStart(3, '0')}`,
+    pad: 3,
+  },
+  {
+    key: 'article',
+    accentVar: 'var(--accent-articles)',
+    lede: 'Essays & Notes',
+    defaultCat: 'Essay',
+    prefix: (n) => `A·${String(n).padStart(2, '0')}`,
+    pad: 2,
+  },
+  {
+    key: 'review',
+    accentVar: 'var(--accent-reviews)',
+    lede: 'Film · TV · Food',
+    defaultCat: 'Review',
+    prefix: (n) => `R·${String(n).padStart(2, '0')}`,
+    pad: 2,
+  },
+];
+
+const big3 = SECTIONS.map((section) => {
+  const config = CATEGORY_CONFIG[section.key];
+  const list = grouped[section.key] || [];
+  const total = list.length;
+  const items = list.slice(0, 5).map((post, i) => {
+    const tags = post.data.tags || [];
     return {
-      key,
-      label: config.label,
-      description: config.description,
-      accent: config.accent,
-      href: '/byline/',
-      count: sortedBylines.length,
-      items,
-      comingSoon: false,
+      id: section.prefix(total - i),
+      cat: tags.length ? titleCase(tags[0]) : section.defaultCat,
+      date: dot(post.data.date),
+      title: post.data.title || getPostSlug(post.id, post.data),
+      subtitle: post.data.subTitle,
+      href: `/${getCategoryPath(getPostCategory(post.data.category))}/${getPostSlug(post.id, post.data)}/`,
     };
-  }
-
-  const catPosts = grouped[key] || [];
-  const items = catPosts.slice(0, 5).map((post) => ({
-    title: post.data.title || getPostSlug(post.id, post.data),
-    subtitle: post.data.subTitle,
-    href: `/${getPostCategory(post.data.category)}/${getPostSlug(post.id, post.data)}/`,
-  }));
-
+  });
   return {
-    key,
+    key: section.key,
     label: config.label,
-    description: config.description,
-    accent: config.accent,
-    href: `/${key}/`,
-    count: catPosts.length,
+    href: `/${config.path}/`,
+    accentVar: section.accentVar,
+    lede: section.lede,
+    count: total,
     items,
-    comingSoon: catPosts.length === 0,
   };
 });
 
-// Add Archive as 6th card — merge posts + bylines for 5 most recent
-const allItems = [
-  ...sorted.map((post) => ({
-    title: post.data.title || getPostSlug(post.id, post.data),
-    href: `/${getPostCategory(post.data.category)}/${getPostSlug(post.id, post.data)}/`,
-    date: post.data.date,
-    external: false,
-  })),
-  ...sortedBylines.map((b) => ({
-    title: b.data.title,
-    href: b.data.url,
-    date: b.data.date,
-    external: true,
-  })),
-].sort((a, b) => b.date.getTime() - a.date.getTime());
+// Bylines — secondary strip (published elsewhere)
+const bylineStrip = bylines.slice(0, 4).map((b) => ({
+  title: b.data.title,
+  publication: b.data.publication,
+  href: b.data.url,
+}));
 
-gridCards.push({
-  key: 'archive',
-  label: 'Archive',
-  description: 'All posts, chronologically',
-  accent: '#555',
-  href: '/archive/',
-  count: totalItems,
-  items: allItems.slice(0, 5).map((item) => ({
-    title: item.title,
-    href: item.href,
-  })),
-  comingSoon: false,
-});
+// Topic chips — quiet, footer-level. Most-used tags across published posts.
+const tagCounts = new Map<string, number>();
+for (const post of sorted) {
+  for (const tag of post.data.tags || []) {
+    tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+  }
+}
+const topTopics = [...tagCounts.entries()]
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 9)
+  .map(([tag]) => tag);
 ---
 
-<BaseLayout title="Edition | Rod Machen" description="Writing on food, film, arts, and Austin culture.">
-  <section class="hero">
-    <h1>Edition</h1>
-    <p class="tagline">Writing by Rod Machen</p>
-  </section>
+<BaseLayout
+  title="Edition | Rod Machen"
+  description="Writing on food, film, arts, and Austin culture by Rod Machen."
+  variant="home"
+>
+  <div class="wrap">
+    <div class="big3">
+      {big3.map((section) => (
+        <section class="sec" style={`--sec-accent: ${section.accentVar}`}>
+          <div class="sec-h">
+            <h2><a href={section.href}>{section.label}</a></h2>
+            <span class="lede">{section.lede}</span>
+          </div>
 
-  <div class="grid">
-    {gridCards.map((card) => (
-      <div class="card" style={`--card-accent: ${card.accent}`}>
-        <a href={card.href} class="card-header">
-          <h2>{card.label}</h2>
-          <span class="card-count">{card.count}</span>
-        </a>
-        <p class="card-desc">{card.description}</p>
-        {card.comingSoon ? (
-          <p class="coming-soon">Coming soon</p>
-        ) : card.items.length > 0 ? (
-          <ul class="card-list">
-            {card.items.map((item) => (
-              <li>
-                <a
-                  href={item.href}
-                  {...(card.key === 'byline' ? { target: '_blank', rel: 'noopener' } : {})}
-                >
-                  <span class="item-title">{item.title}</span>
-                  {item.subtitle && <span class="item-subtitle">{item.subtitle}</span>}
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-        <a href={card.href} class="card-link">
-          {card.key === 'archive' ? 'Browse all' : `View all ${card.label}`} &rarr;
-        </a>
-      </div>
-    ))}
+          {section.items.length === 0 ? (
+            <p class="coming-soon">Coming soon.</p>
+          ) : (
+            section.items.map((item, i) => (
+              <article class:list={['feat', { lead: i === 0 }]}>
+                <span class="ix">{item.id}</span>
+                <div class="feat-body">
+                  <div class="meta">
+                    <span class="cat">{item.cat}</span>
+                    <span>{item.date}</span>
+                  </div>
+                  <a href={item.href}>
+                    <h3>{item.title}</h3>
+                  </a>
+                  {i === 0 && item.subtitle && <p class="dek">{item.subtitle}</p>}
+                </div>
+              </article>
+            ))
+          )}
+
+          <a href={section.href} class="sec-all">
+            All {section.label} ({section.count}) &rarr;
+          </a>
+        </section>
+      ))}
+    </div>
   </div>
 
-  <nav class="home-nav">
-    <a href="/archive/">Full Archive ({totalItems} posts)</a>
-    <a href="/topics/">Topics</a>
-  </nav>
+  {bylineStrip.length > 0 && (
+    <section class="bylines">
+      <div class="wrap inner">
+        <span class="lab">&#47;&#47; Bylines elsewhere &rarr;</span>
+        <ul>
+          {bylineStrip.map((b) => (
+            <li>
+              <a href={b.href} target="_blank" rel="noopener">
+                {b.title}<span class="src">{b.publication}</span>
+              </a>
+            </li>
+          ))}
+          <li class="more"><a href="/bylines/">All bylines &rarr;</a></li>
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <div class="wrap">
+    <nav class="quiet" aria-label="More">
+      <a class="archive-link" href="/archive/">The Full Archive &middot; {totalItems} entries</a>
+      {topTopics.length > 0 && (
+        <div class="topics">
+          {topTopics.map((tag) => (
+            <a href={`/topics/${tag}/`}>{tag}</a>
+          ))}
+        </div>
+      )}
+    </nav>
+  </div>
 </BaseLayout>
 
 <style>
-  .hero {
-    text-align: center;
-    margin-bottom: 3rem;
-    padding: 2rem 0;
-  }
-
-  .hero h1 {
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    font-weight: 300;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-
-  .tagline {
-    font-size: 1.1rem;
-    color: var(--color-text-light);
-    font-style: italic;
-  }
-
-  .grid {
+  /* --- Big 3 ---------------------------------------------------------- */
+  .big3 {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+    grid-template-columns: 1fr;
   }
 
-  .card {
-    border: 1px solid var(--color-border);
-    border-top: 3px solid var(--card-accent);
-    padding: 1.25rem;
+  @media (min-width: 920px) {
+    .big3 {
+      grid-template-columns: 1.25fr 1fr 1fr;
+    }
+    .big3 .sec + .sec {
+      border-left: var(--rule-thin) solid var(--rule);
+    }
+  }
+
+  .sec {
+    padding: 1.9rem 1.6rem 2rem;
     display: flex;
     flex-direction: column;
   }
 
-  .card-header {
+  @media (max-width: 919px) {
+    .sec {
+      padding: 1.6rem 0 1.4rem;
+    }
+    .sec + .sec {
+      border-top: var(--rule-thin) solid var(--rule);
+    }
+  }
+
+  .sec-h {
     display: flex;
-    justify-content: space-between;
     align-items: baseline;
-    text-decoration: none;
+    gap: 0.6rem;
+    border-bottom: var(--rule-thick) solid var(--ink);
+    padding-bottom: 0.55rem;
     margin-bottom: 0.25rem;
   }
 
-  .card-header:hover {
-    text-decoration: none;
+  .sec-h h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-xl);
+    margin: 0;
   }
 
-  .card h2 {
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--card-accent);
+  .sec-h h2 a:hover {
+    color: var(--sec-accent);
+  }
+
+  .sec-h .lede {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    color: var(--sec-accent);
+    margin-left: auto;
+    text-align: right;
   }
 
-  .card-count {
-    font-family: var(--font-sans);
-    font-size: 0.8rem;
-    color: var(--color-text-light);
+  .feat {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr;
+    gap: 0 0.85rem;
+    padding: 1rem 0;
+    border-bottom: var(--rule-thin) solid var(--rule-soft);
   }
 
-  .card-desc {
-    font-size: 0.85rem;
-    color: var(--color-text-light);
-    margin-bottom: 0.75rem;
-  }
-
-  .card-list {
-    list-style: none;
-    flex: 1;
-    margin-bottom: 0.75rem;
-  }
-
-  .card-list li {
-    padding: 0.25rem 0;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .card-list li:first-child {
-    border-top: 1px solid var(--color-border);
-  }
-
-  .card-list a {
-    font-size: 0.85rem;
+  .feat .ix {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    padding-top: 0.4rem;
     line-height: 1.3;
-    display: flex;
-    flex-direction: column;
   }
 
-  .item-subtitle {
-    font-size: 0.75rem;
-    color: var(--color-text-light);
+  .feat-body {
+    min-width: 0;
+  }
+
+  .feat .meta {
+    display: flex;
+    gap: 0.65rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.35rem;
+  }
+
+  .feat .meta .cat {
+    color: var(--sec-accent);
+  }
+
+  .feat h3 {
+    font-family: var(--font-text);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    line-height: 1.18;
+    letter-spacing: -0.005em;
+    margin: 0;
+  }
+
+  .feat.lead h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.75rem;
+    line-height: 1.08;
+  }
+
+  .feat a:hover h3 {
+    color: var(--sec-accent);
+  }
+
+  .feat .dek {
+    font-size: 1rem;
     font-style: italic;
+    color: var(--ink-soft);
+    margin: 0.4rem 0 0;
   }
 
   .coming-soon {
-    font-family: var(--font-sans);
-    font-size: 0.85rem;
-    color: var(--color-text-light);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--ink-soft);
     font-style: italic;
-    flex: 1;
-    display: flex;
-    align-items: center;
+    padding: 1.2rem 0;
   }
 
-  .card-link {
-    font-family: var(--font-sans);
-    font-size: 0.8rem;
+  .sec-all {
     margin-top: auto;
-    padding-top: 0.5rem;
+    padding-top: 0.9rem;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
   }
 
-  .home-nav {
+  .sec-all:hover {
+    color: var(--sec-accent);
+  }
+
+  /* --- Bylines strip (secondary) ------------------------------------- */
+  .bylines {
+    border-top: var(--rule-thin) solid var(--ink);
+    border-bottom: var(--rule-thin) solid var(--ink);
+    background: var(--paper-2);
+    margin-top: 0.5rem;
+  }
+
+  .bylines .inner {
     display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.6rem;
+    padding-top: 1.1rem;
+    padding-bottom: 1.1rem;
+  }
+
+  .bylines .lab {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .bylines ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 1.5rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .bylines li {
+    margin: 0;
+  }
+
+  .bylines a {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    border-bottom: 1px solid transparent;
+  }
+
+  .bylines a:hover {
+    color: var(--ink);
+    border-color: var(--accent);
+  }
+
+  .bylines .src {
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-left: 0.4rem;
+  }
+
+  .bylines .more a {
+    font-style: normal;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* --- Quiet topics / archive band ----------------------------------- */
+  .quiet {
+    padding: 1.8rem 0 0.5rem;
+    text-align: center;
+  }
+
+  .archive-link {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .archive-link:hover {
+    color: var(--accent);
+  }
+
+  .quiet .topics {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 2rem;
-    padding: 2rem 0;
-    border-top: 1px solid var(--color-border);
+    gap: 0.5rem;
   }
 
-  .home-nav a {
-    font-family: var(--font-sans);
-    font-size: 0.85rem;
-    color: var(--color-text-light);
+  .quiet .topics a {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    border: var(--rule-thin) solid var(--rule);
+    border-radius: 20px;
+    padding: 0.25rem 0.8rem;
   }
 
-  @media (max-width: 768px) {
-    .grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 500px) {
-    .grid {
-      grid-template-columns: 1fr;
-    }
-
-    .home-nav {
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
+  .quiet .topics a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
   }
 </style>

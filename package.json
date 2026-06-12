@@ -1,22 +1,28 @@
 {
-  "name": "rodmachen.com",
+  "name": "edition-rodmachen-com",
   "type": "module",
   "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest run",
+    "check": "astro check"
   },
   "dependencies": {
-    "@astrojs/rss": "^4.0.0",
-    "@astrojs/vercel": "^8.0.0",
-    "astro": "^5.17.2",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/vercel": "^8.2.11",
+    "astro": "^5.18.2",
     "astro-cloudinary": "^1.3.5",
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
     "cheerio": "^1.2.0",
-    "turndown": "^7.2.2"
+    "turndown": "^7.2.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.8"
   }
 }

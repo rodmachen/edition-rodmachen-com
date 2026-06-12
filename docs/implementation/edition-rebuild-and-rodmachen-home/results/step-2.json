@@ -1,0 +1,20 @@
+{
+  "step": 2,
+  "status": "success",
+  "commits": ["186e785", "d32d85b", "40aad2b"],
+  "archived_plans": ["rod-machen-architecture.md"],
+  "unexpected_diff_notes": [
+    "neutral-milk-hotel post has a minor formatting diff (HR tag changed from <hr> to ---) in addition to expected category change — cosmetic markup normalization, not a concern.",
+    "No completed plans found in docs/plans/ (no plan files had all step headings marked ✅), so only rod-machen-architecture.md was moved to archive."
+  ],
+  "decisions": [
+    "Two commits used: one for content/config changes (Step 2a), one for docs reorganization (Step 2b), for cleaner history.",
+    "a-week-of-tennis.md committed with published: false as draft — build still renders it (published flag not yet filtered; that's Step 5).",
+    "rod-machen-architecture.md had superseded-by note prepended before archiving."
+  ],
+  "assumptions": [
+    "Build rendering /article/a-week-of-tennis/ is expected; draft filtering is deferred to Step 5.",
+    "No completed plans to archive beyond the superseded architecture doc."
+  ],
+  "blockers": []
+}

@@ -2,50 +2,406 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import PostCardList from '../../components/PostCardList.astro';
-import { getPostCategory, CATEGORY_CONFIG, postToListItem } from '../../utils/posts';
+import {
+  getPostSlug,
+  getPostCategory,
+  getCategoryPath,
+  CATEGORY_CONFIG,
+  getPublishedPosts,
+} from '../../utils/posts';
 
 export const getStaticPaths = (async () => {
-  return Object.keys(CATEGORY_CONFIG)
-    .filter((key) => key !== 'byline')
-    .map((key) => ({
-      params: { category: key },
-      props: { category: key },
+  return Object.entries(CATEGORY_CONFIG)
+    .filter(([key]) => key !== 'byline')
+    .map(([key, config]) => ({
+      params: { category: config.path },
+      props: { categoryKey: key },
     }));
 }) satisfies GetStaticPaths;
 
-const { category } = Astro.props;
-const config = CATEGORY_CONFIG[category];
+const { categoryKey } = Astro.props;
+const config = CATEGORY_CONFIG[categoryKey];
 
-const posts = await getCollection('posts');
+const posts = getPublishedPosts(await getCollection('posts'));
 const filtered = posts
-  .filter((p) => getPostCategory(p.data.category) === category)
+  .filter((p) => getPostCategory(p.data.category) === categoryKey)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const items = filtered.map(postToListItem);
+function dot(date: Date): string {
+  const y = date.getFullYear();
+  const mo = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}.${mo}.${d}`;
+}
+
+function titleCase(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+type SectionMeta = {
+  pageTitle: string;
+  description: string;
+  h1: string;
+  lede: string;
+  accentVar: string;
+  prefix: (n: number) => string;
+};
+
+const SECTION_META: Record<string, SectionMeta> = {
+  newsletter: {
+    pageTitle: 'The Hangman Chronicles | Edition',
+    description: 'The Hangman Chronicles — a weekly dispatch by Rod Machen on culture, arts, and Austin life.',
+    h1: 'The Hangman Chronicles',
+    lede: 'A weekly dispatch by Rod Machen',
+    accentVar: 'var(--accent-newsletter)',
+    prefix: (n) => `№${String(n).padStart(3, '0')}`,
+  },
+  article: {
+    pageTitle: `${config.label} | Edition`,
+    description: 'Long-form writing, essays, and original pieces by Rod Machen.',
+    h1: config.label,
+    lede: 'Essays & Notes',
+    accentVar: 'var(--accent-articles)',
+    prefix: (n) => `A·${String(n).padStart(2, '0')}`,
+  },
+  review: {
+    pageTitle: `${config.label} | Edition`,
+    description: 'Film, TV, and food reviews by Rod Machen, published in Edition.',
+    h1: config.label,
+    lede: 'Film · TV · Food',
+    accentVar: 'var(--accent-reviews)',
+    prefix: (n) => `R·${String(n).padStart(2, '0')}`,
+  },
+};
+
+const meta = SECTION_META[categoryKey] ?? {
+  pageTitle: `${config.label} | Edition`,
+  description: config.description,
+  h1: config.label,
+  lede: config.description,
+  accentVar: 'var(--accent)',
+  prefix: (n: number) => String(n),
+};
+
+const total = filtered.length;
+const entries = filtered.map((post, i) => {
+  const tags = post.data.tags || [];
+  const slug = getPostSlug(post.id, post.data);
+  return {
+    id: meta.prefix(total - i),
+    date: dot(post.data.date),
+    title: post.data.title || slug,
+    subtitle: post.data.subTitle,
+    tag: tags.length ? titleCase(tags[0]) : config.label,
+    href: `/${getCategoryPath(getPostCategory(post.data.category))}/${slug}/`,
+  };
+});
 ---
 
-<BaseLayout title={`${config.label} | Edition`}>
-  <PageHeader
-    title={config.label}
-    titleColor={config.accent}
-    subtitle={config.description}
-    count={filtered.length}
-  />
+<BaseLayout title={meta.pageTitle} description={meta.description} variant="section">
+  <div class="section-page" style={`--sec-accent: ${meta.accentVar}`}>
 
-  {filtered.length === 0 ? (
-    <p class="empty">Coming soon.</p>
-  ) : (
-    <PostCardList items={items} />
-  )}
+    <header class="sec-masthead">
+      <div class="wrap">
+        <p class="sec-nav">
+          <a href="/">Edition</a>
+          <span aria-hidden="true">/</span>
+          <span>{config.label}</span>
+        </p>
+        <h1>{meta.h1}</h1>
+        <p class="sec-lede">{meta.lede}</p>
+        <p class="sec-count">{total} {total === 1 ? 'entry' : 'entries'}</p>
+      </div>
+    </header>
+
+    <div class="wrap catalog-wrap">
+      {filtered.length === 0 ? (
+        <p class="empty">Coming soon.</p>
+      ) : categoryKey === 'review' ? (
+        <div class="catalog catalog--review">
+          {entries.map((entry, i) => (
+            <div class:list={['ledger-row', { lead: i === 0 }]}>
+              <span class="entry-id">{entry.id}</span>
+              <div class="ledger-main">
+                <a href={entry.href} class="entry-link">
+                  <span class="entry-title">{entry.title}</span>
+                </a>
+                {i === 0 && entry.subtitle && (
+                  <p class="entry-dek">{entry.subtitle}</p>
+                )}
+                <span class="entry-cat">{entry.tag}</span>
+              </div>
+              <span class="entry-date-col">{entry.date}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <ol class={`catalog catalog--${categoryKey}`}>
+          {entries.map((entry, i) => (
+            <li class:list={['catalog-entry', { lead: i === 0 }]}>
+              <span class="entry-id">{entry.id}</span>
+              <div class="entry-body">
+                <div class="entry-meta">
+                  <span class="entry-cat">{entry.tag}</span>
+                  <span class="entry-date">{entry.date}</span>
+                </div>
+                <a href={entry.href} class="entry-link">
+                  <span class="entry-title">{entry.title}</span>
+                </a>
+                {i === 0 && entry.subtitle && (
+                  <p class="entry-dek">{entry.subtitle}</p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+
+  </div>
 </BaseLayout>
 
 <style>
+  /* ---- Page wrapper -------------------------------------------------- */
+  .section-page {
+    padding-bottom: 3rem;
+  }
+
+  /* ---- Masthead ------------------------------------------------------- */
+  .sec-masthead {
+    background: var(--paper-2);
+    border-bottom: 2px solid var(--ink);
+    padding: 2rem 0 1.6rem;
+    margin-bottom: 0;
+  }
+
+  .sec-nav {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .sec-nav a { color: var(--sec-accent); }
+  .sec-nav a:hover { opacity: 0.75; }
+
+  .sec-masthead h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: var(--display-sm);
+    line-height: 1;
+    color: var(--sec-accent);
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.02em;
+  }
+
+  .sec-lede {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.6rem;
+  }
+
+  .sec-count {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ---- Catalog wrap -------------------------------------------------- */
+  .catalog-wrap {
+    padding-top: 1.5rem;
+  }
+
+  /* ---- Empty state --------------------------------------------------- */
   .empty {
-    text-align: center;
-    color: var(--color-text-light);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--ink-soft);
     font-style: italic;
     padding: 3rem 0;
+    text-align: center;
+  }
+
+  /* ---- Newsletter / Articles: dispatch catalog (shared base) --------- */
+  .catalog {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 2px solid var(--ink);
+  }
+
+  .catalog-entry {
+    display: grid;
+    grid-template-columns: 3.2rem 1fr;
+    gap: 0 0.85rem;
+    padding: 1rem 0;
+    border-bottom: var(--rule-thin) solid var(--rule-soft);
+  }
+
+  .catalog-entry.lead {
+    padding-bottom: 1.4rem;
+  }
+
+  .entry-id {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    padding-top: 0.35rem;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+
+  .entry-body { min-width: 0; }
+
+  .entry-meta {
+    display: flex;
+    gap: 0.65rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.3rem;
+  }
+
+  .entry-cat { color: var(--sec-accent); }
+
+  .entry-link { display: block; }
+
+  .entry-title {
+    font-family: var(--font-text);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    line-height: 1.18;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+  }
+
+  .catalog-entry.lead .entry-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.85rem;
+    line-height: 1.08;
+  }
+
+  .entry-link:hover .entry-title { color: var(--sec-accent); }
+
+  .entry-dek {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 0.4rem 0 0;
+    line-height: 1.4;
+  }
+
+  /* ---- Newsletter: extra emphasis on lead issue ---------------------- */
+  .catalog--newsletter .catalog-entry.lead {
+    padding-top: 1.4rem;
+  }
+
+  .catalog--newsletter .catalog-entry.lead .entry-id {
+    font-size: var(--text-sm);
+    padding-top: 0.5rem;
+    color: var(--sec-accent);
+  }
+
+  .catalog--newsletter .catalog-entry.lead .entry-title {
+    font-size: 2.2rem;
+  }
+
+  /* ---- Reviews: ruled ledger-table device ---------------------------- */
+  .catalog--review {
+    border-top: 2px solid var(--ink);
+  }
+
+  .ledger-row {
+    display: grid;
+    grid-template-columns: 3.2rem 1fr auto;
+    gap: 0 1rem;
+    padding: 0.85rem 0;
+    border-bottom: var(--rule-thin) solid var(--rule);
+    align-items: baseline;
+  }
+
+  .ledger-row.lead {
+    padding-top: 1.1rem;
+    padding-bottom: 1.1rem;
+    border-bottom: var(--rule-thick) solid var(--rule);
+  }
+
+  .ledger-main { min-width: 0; }
+
+  .ledger-row .entry-id {
+    padding-top: 0.15rem;
+  }
+
+  .ledger-row .entry-title {
+    font-size: var(--text-base);
+    font-weight: 600;
+    font-family: var(--font-text);
+    line-height: 1.25;
+  }
+
+  .ledger-row.lead .entry-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: var(--text-xl);
+    line-height: 1.1;
+  }
+
+  .ledger-row .entry-link:hover .entry-title { color: var(--sec-accent); }
+
+  .ledger-row .entry-cat {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sec-accent);
+    margin-top: 0.25rem;
+  }
+
+  .ledger-row .entry-dek {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 0.3rem 0 0;
+  }
+
+  .entry-date-col {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    color: var(--gold);
+    white-space: nowrap;
+    padding-top: 0.15rem;
+    text-align: right;
+    align-self: start;
+  }
+
+  /* ---- Mobile -------------------------------------------------------- */
+  @media (max-width: 600px) {
+    .sec-masthead h1 {
+      font-size: clamp(2rem, 12vw, 3.5rem);
+    }
+
+    .ledger-row {
+      grid-template-columns: 3rem 1fr;
+    }
+
+    .entry-date-col {
+      display: none;
+    }
   }
 </style>

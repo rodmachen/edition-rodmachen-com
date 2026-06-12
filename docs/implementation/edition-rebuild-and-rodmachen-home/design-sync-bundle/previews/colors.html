@@ -1,0 +1,64 @@
+<!-- @dsCard group="Colors" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edition — Color tokens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; font-family: 'Spline Sans Mono', monospace; font-size: 11px; }
+  h2 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 22px; margin: 0 0 12px; }
+  .theme { padding: 24px; }
+  .light { background: #f4efe4; color: #1c1815; }
+  .dark { background: #16130f; color: #ece4d2; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .swatch { width: 118px; }
+  .chip { height: 56px; border-radius: 2px; border: 1px solid rgba(0,0,0,.15); }
+  .dark .chip { border-color: rgba(255,255,255,.12); }
+  .swatch p { margin: 6px 0 0; letter-spacing: .04em; line-height: 1.5; }
+  .label { text-transform: uppercase; letter-spacing: .08em; opacity: .65; margin: 0 0 8px; }
+</style>
+</head>
+<body>
+  <section class="theme light">
+    <h2>Light — cream paper &amp; oxblood ink (default)</h2>
+    <p class="label">Surfaces &amp; ink</p>
+    <div class="row">
+      <div class="swatch"><div class="chip" style="background:#f4efe4"></div><p>--paper<br>#f4efe4</p></div>
+      <div class="swatch"><div class="chip" style="background:#ece5d4"></div><p>--paper-2<br>#ece5d4</p></div>
+      <div class="swatch"><div class="chip" style="background:#1c1815"></div><p>--ink<br>#1c1815</p></div>
+      <div class="swatch"><div class="chip" style="background:#4a4239"></div><p>--ink-soft<br>#4a4239</p></div>
+      <div class="swatch"><div class="chip" style="background:#cabf9f"></div><p>--rule<br>#cabf9f</p></div>
+      <div class="swatch"><div class="chip" style="background:#ddd4bd"></div><p>--rule-soft<br>#ddd4bd</p></div>
+    </div>
+    <p class="label">Accents (AA on both paper tones for small text)</p>
+    <div class="row">
+      <div class="swatch"><div class="chip" style="background:#8a2b1f"></div><p>--accent / newsletter<br>oxblood #8a2b1f</p></div>
+      <div class="swatch"><div class="chip" style="background:#9c4d34"></div><p>--accent-2 / articles<br>clay #9c4d34</p></div>
+      <div class="swatch"><div class="chip" style="background:#7a6122"></div><p>--gold / reviews<br>ochre #7a6122</p></div>
+      <div class="swatch"><div class="chip" style="background:#6f6450"></div><p>--accent-bylines<br>taupe #6f6450</p></div>
+    </div>
+  </section>
+  <section class="theme dark">
+    <h2>Dark — warm ink-at-night</h2>
+    <p class="label">Surfaces &amp; ink</p>
+    <div class="row">
+      <div class="swatch"><div class="chip" style="background:#16130f"></div><p>--paper<br>#16130f</p></div>
+      <div class="swatch"><div class="chip" style="background:#1f1a14"></div><p>--paper-2<br>#1f1a14</p></div>
+      <div class="swatch"><div class="chip" style="background:#ece4d2"></div><p>--ink<br>#ece4d2</p></div>
+      <div class="swatch"><div class="chip" style="background:#b3a98f"></div><p>--ink-soft<br>#b3a98f</p></div>
+      <div class="swatch"><div class="chip" style="background:#473e2d"></div><p>--rule<br>#473e2d</p></div>
+      <div class="swatch"><div class="chip" style="background:#2c261c"></div><p>--rule-soft<br>#2c261c</p></div>
+    </div>
+    <p class="label">Accents</p>
+    <div class="row">
+      <div class="swatch"><div class="chip" style="background:#e07a5f"></div><p>--accent / newsletter<br>ember #e07a5f</p></div>
+      <div class="swatch"><div class="chip" style="background:#d98c6a"></div><p>--accent-articles<br>#d98c6a</p></div>
+      <div class="swatch"><div class="chip" style="background:#c9a14a"></div><p>--gold / reviews<br>#c9a14a</p></div>
+      <div class="swatch"><div class="chip" style="background:#a99a80"></div><p>--accent-bylines<br>#a99a80</p></div>
+    </div>
+  </section>
+</body>
+</html>

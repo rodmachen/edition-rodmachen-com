@@ -1,0 +1,252 @@
+/* rodmachen.com — "The Calling Card"
+   Dark editorial hub. Bodoni Moda nameplate over Hanken Grotesk, warm amber accent.
+   Dark by default; light variant via prefers-color-scheme. */
+
+:root {
+  --bg: #0f0e0c;
+  --bg-2: #16140f;
+  --ink: #f2ece0;
+  --ink-soft: #9c9384;
+  --amber: #e0a23c;
+  --amber-2: #c98729;
+  --amber-contrast: #0f0e0c;
+  --line: #2a261e;
+  --line-2: #3a342a;
+  --display: 'Bodoni Moda', Georgia, 'Times New Roman', serif;
+  --sans: 'Hanken Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f4efe6;
+    --bg-2: #ece4d4;
+    --ink: #1a1712;
+    --ink-soft: #6c6253;
+    --amber: #a9711b;
+    --amber-2: #8c5d12;
+    --amber-contrast: #f4efe6;
+    --line: #ddd2bd;
+    --line-2: #cbbfa4;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: radial-gradient(ellipse 80% 50% at 50% -8%, rgba(224, 162, 60, .10), transparent 60%);
+  background-attachment: fixed;
+}
+
+a { color: inherit; text-decoration: none; }
+
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Skip link */
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 10;
+  background: var(--amber);
+  color: var(--amber-contrast);
+  padding: 10px 18px;
+  font-weight: 600;
+  border-radius: 0 0 6px 0;
+}
+.skip:focus { left: 0; }
+
+.shell {
+  flex: 1;
+  max-width: 920px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 54px 28px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Masthead ---- */
+.masthead { animation: rise .7s cubic-bezier(.2, .7, .2, 1) both; }
+
+.eyebrow {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--line-2); }
+
+.name {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(64px, 16vw, 168px);
+  line-height: .86;
+  letter-spacing: -.02em;
+  margin: 22px 0 0;
+}
+.name .last {
+  display: block;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--amber);
+}
+
+.tagline {
+  font-family: var(--display);
+  font-size: clamp(19px, 3vw, 26px);
+  font-style: italic;
+  color: var(--ink-soft);
+  max-width: 32ch;
+  margin-top: 24px;
+  line-height: 1.3;
+}
+
+.bio {
+  max-width: 54ch;
+  margin-top: 18px;
+  color: var(--ink-soft);
+  font-size: 16.5px;
+}
+.bio b { color: var(--ink); font-weight: 600; }
+
+/* ---- Section labels ---- */
+.lab {
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 48px 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.lab::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.lab--flush { margin-top: 0; }
+
+/* ---- Destinations index ---- */
+.block { animation: rise .7s cubic-bezier(.2, .7, .2, 1) .1s both; }
+
+.sites { display: grid; grid-template-columns: 1fr; }
+
+.site {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 20px 4px;
+  border-bottom: 1px solid var(--line);
+  transition: padding-left .2s ease, border-color .2s ease;
+  position: relative;
+}
+.site:hover, .site:focus-visible { padding-left: 16px; border-color: var(--line-2); }
+
+.site .idx {
+  font-family: var(--display);
+  font-size: 14px;
+  color: var(--amber);
+  width: 34px;
+  flex: none;
+}
+.site .main { flex: 1; min-width: 0; }
+.site .main .t {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(24px, 4.5vw, 34px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -.01em;
+}
+.site .main .d { display: block; color: var(--ink-soft); font-size: 15px; margin-top: 5px; }
+
+.site .host {
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: .02em;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.site .arr { font-size: 20px; color: var(--amber); transition: transform .2s ease; flex: none; }
+.site:hover .arr, .site:focus-visible .arr { transform: translate(4px, -4px); }
+
+@media (max-width: 560px) {
+  .site .host { display: none; }
+}
+
+/* ---- Secondary: bylines + social ---- */
+.cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 34px;
+  margin-top: 46px;
+  animation: rise .7s cubic-bezier(.2, .7, .2, 1) .2s both;
+}
+@media (min-width: 720px) { .cols { grid-template-columns: 1fr 1fr; } }
+
+.chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 1px solid var(--line-2);
+  border-radius: 40px;
+  padding: 9px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease;
+}
+.chip:hover, .chip:focus-visible {
+  background: var(--amber);
+  color: var(--amber-contrast);
+  border-color: var(--amber);
+}
+.chip .pub { color: var(--ink-soft); font-weight: 500; font-size: 12px; }
+.chip:hover .pub, .chip:focus-visible .pub { color: var(--amber-contrast); }
+
+/* ---- Footer ---- */
+footer { border-top: 1px solid var(--line); margin-top: 8px; }
+footer .inner {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 26px 28px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+footer a { transition: color .18s ease; }
+footer a:hover, footer a:focus-visible { color: var(--amber); }
+
+/* ---- Motion ---- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}

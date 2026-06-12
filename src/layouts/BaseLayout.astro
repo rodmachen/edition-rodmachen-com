@@ -7,10 +7,25 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  /**
+   * 'home' — full front-page nameplate (as the page <h1>) + unconstrained main.
+   * 'section' — same full-width nameplate visual, but the nameplate is NOT the
+   *   page heading (the section page supplies its own <h1>).
+   * 'default' — compact masthead + constrained main.
+   */
+  variant?: 'home' | 'section' | 'default';
 }
 
-const { title, description = 'Edition — writing on food, film, arts, and Austin culture by Rod Machen.', ogImage } = Astro.props;
+const {
+  title,
+  description = 'Edition — writing on food, film, arts, and Austin culture by Rod Machen.',
+  ogImage,
+  variant = 'default',
+} = Astro.props;
+
 const canonicalUrl = Astro.url.href;
+const isFullWidth = variant === 'home' || variant === 'section';
+const headingNameplate = variant === 'home';
 ---
 
 <!DOCTYPE html>
@@ -18,9 +33,47 @@ const canonicalUrl = Astro.url.href;
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- theme-color (kept in sync by the bootstrap script + ThemeToggle) -->
+  <meta name="theme-color" content="#f4efe4" />
+
+  <!--
+    Render-blocking, synchronous: resolve the saved theme and set data-theme on
+    <html> BEFORE any background-painting CSS loads, so a hard reload in dark
+    mode shows no white/cream flash. Must stay inline and ahead of the stylesheet.
+  -->
+  <script is:inline>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        if (stored === 'dark' || stored === 'light') {
+          document.documentElement.setAttribute('data-theme', stored);
+        }
+        var resolved =
+          stored === 'dark' || stored === 'light'
+            ? stored
+            : window.matchMedia &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', resolved === 'dark' ? '#16130f' : '#f4efe4');
+      } catch (e) {}
+    })();
+  </script>
+
   <meta name="description" content={description} />
   <link rel="alternate" type="application/rss+xml" title="Edition | Rod Machen" href="/rss.xml" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+  <!-- Fonts: Fraunces (display), Newsreader (body), Spline Sans Mono (metadata) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..600&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=Spline+Sans+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
   <title>{title}</title>
 
   <!-- Open Graph -->
@@ -37,18 +90,23 @@ const canonicalUrl = Astro.url.href;
   {ogImage && <meta name="twitter:image" content={ogImage} />}
 </head>
 <body>
-  <Header />
-  <main class="container">
-    <slot />
-  </main>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <Header home={isFullWidth} headingNameplate={headingNameplate} />
+  {isFullWidth ? (
+    <main id="main"><slot /></main>
+  ) : (
+    <main id="main" class="container"><slot /></main>
+  )}
   <Footer />
 </body>
 </html>
 
 <style>
   main {
-    padding-top: 2rem;
     padding-bottom: 3rem;
     min-height: 60vh;
+  }
+  main.container {
+    padding-top: 2rem;
   }
 </style>

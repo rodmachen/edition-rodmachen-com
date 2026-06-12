@@ -2,7 +2,7 @@
 title: 'Kerlin BBQ'
 subTitle: 'A First Look'
 author: Rod Machen
-category: article
+category: review
 date: 2014-02-20
 tags:
   - austin

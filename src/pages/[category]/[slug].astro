@@ -2,14 +2,14 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, render } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
-import { getPostSlug, getPostCategory } from '../../utils/posts';
+import { getPostSlug, getPostCategory, getCategoryPath, getPublishedPosts } from '../../utils/posts';
 import { getCldOgImageUrl } from 'astro-cloudinary/helpers';
 
 export const getStaticPaths = (async () => {
-  const posts = await getCollection('posts');
+  const posts = getPublishedPosts(await getCollection('posts'));
   return posts.map((post) => {
     const slug = getPostSlug(post.id, post.data);
-    const category = getPostCategory(post.data.category);
+    const category = getCategoryPath(getPostCategory(post.data.category));
     return {
       params: { category, slug },
       props: { post },

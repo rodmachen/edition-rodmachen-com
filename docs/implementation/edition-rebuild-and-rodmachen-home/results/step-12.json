@@ -1,0 +1,25 @@
+{
+  "step": 12,
+  "status": "success",
+  "commit": "894e44b07d02df71fb5a9b61b3e5e4e96eb50137",
+  "link_checks": {
+    "https://edition.rodmachen.com": "200",
+    "https://code.rodmachen.com": "200",
+    "https://photo.rodmachen.com": "200",
+    "https://www.austinchronicle.com/author/rod-machen/": "200",
+    "https://cinapse.net/author/rod/": "200",
+    "https://www.instagram.com/rod.machen.writer": "200",
+    "https://bsky.app/profile/rodmachen.bsky.social": "200",
+    "https://www.facebook.com/rod.machen.writer/": "200"
+  },
+  "decisions": [
+    "Built a production version of the chosen 'The Calling Card' mockup (rodmachen-home-a.html): dark-default editorial hub, Bodoni Moda nameplate over Hanken Grotesk, amber accent, numbered destinations index.",
+    "Split inline CSS into home/styles.css; index.html links it via /styles.css (cleanUrls-friendly absolute path).",
+    "Wired binding links: edition/code/photo destinations; Austin Chronicle and Cinapse byline chips; Elsewhere reduced to exactly the three confirmed socials (Instagram, Bluesky, Facebook) — replacing the mockup's placeholder five (Letterboxd/LinkedIn/GitHub dropped).",
+    "No JS: dark/light handled purely via prefers-color-scheme, matching the toggle-free mockup.",
+    "Accessibility additions over the mockup: skip link, semantic landmarks/headings (nav + sections with aria-labelledby), visible :focus-visible rings, 44px min touch targets on chips, prefers-reduced-motion guard, theme-color and OG/Twitter meta, inline SVG favicon data URI.",
+    "vercel.json: cleanUrls true, trailingSlash false; styles.css gets modest browser max-age (3600) with longer CDN s-maxage (86400) + SWR since the filename is unhashed; HTML kept short/revalidating.",
+    "Committed home/ as one atomic commit; plan checkmark committed separately ('Mark Step 12 complete in plan') per repo convention."
+  ],
+  "blockers": []
+}

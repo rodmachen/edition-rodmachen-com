@@ -1,5 +1,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { getCldImageUrl } from 'astro-cloudinary/helpers';
+import { getPostSlug, getPostCategory, getCategoryPath, extractFirstImage } from './slugs';
+export { getPostSlug, getPostCategory, formatDate, extractFirstImage, getPostsByCategory, getPublishedPosts, getCategoryPath, CATEGORY_CONFIG } from './slugs';
 
 export type ListItem = {
   type: 'post' | 'byline';
@@ -15,27 +17,12 @@ export type ListItem = {
 
 const CLOUDINARY_PATTERN = /res\.cloudinary\.com/;
 
-export function extractFirstImage(markdown: string | undefined): string | undefined {
-  if (!markdown) return undefined;
-  const match = markdown.match(/!\[.*?\]\(((?:\/images\/|https?:\/\/res\.cloudinary\.com\/)\S+?)(?:\s+"[^"]*")?\)/);
-  return match?.[1];
-}
-
-export function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-}
-
 export function postToListItem(p: CollectionEntry<'posts'>): ListItem {
   const slug = getPostSlug(p.id, p.data);
   const cat = getPostCategory(p.data.category);
 
   let image: string | undefined;
   if (p.data.thumbnail) {
-    // Thumbnail is a Cloudinary public ID — build a square-cropped URL
     image = getCldImageUrl({
       src: p.data.thumbnail,
       width: 200,
@@ -45,7 +32,6 @@ export function postToListItem(p: CollectionEntry<'posts'>): ListItem {
   } else {
     const extracted = extractFirstImage(p.body);
     if (extracted && CLOUDINARY_PATTERN.test(extracted)) {
-      // Build a square-cropped thumbnail from the Cloudinary URL
       image = extracted.replace(
         /\/upload\//,
         '/upload/w_200,h_200,c_fill,g_auto,f_auto,q_auto/',
@@ -60,7 +46,7 @@ export function postToListItem(p: CollectionEntry<'posts'>): ListItem {
     date: p.data.date,
     title: p.data.title || slug,
     subtitle: p.data.subTitle,
-    href: `/${cat}/${slug}/`,
+    href: `/${getCategoryPath(cat)}/${slug}/`,
     category: cat,
     tags: p.data.tags || [],
     image,
@@ -84,52 +70,4 @@ export function bylineToListItem(b: CollectionEntry<'bylines'>): ListItem {
     tags: b.data.tags || [],
     image: PUBLICATION_LOGOS[b.data.publication],
   };
-}
-
-export const CATEGORY_CONFIG: Record<string, { label: string; description: string; accent: string }> = {
-  newsletter: {
-    label: 'Newsletter',
-    description: 'The Hangman Chronicles',
-    accent: '#117a65',
-  },
-  byline: {
-    label: 'Bylines',
-    description: 'Published at external outlets',
-    accent: '#2e4057',
-  },
-  article: {
-    label: 'Articles',
-    description: 'Long-form writing and original pieces',
-    accent: '#1a5276',
-  },
-  essay: {
-    label: 'Essays',
-    description: 'Personal essays and opinion pieces',
-    accent: '#6c3483',
-  },
-  review: {
-    label: 'Reviews',
-    description: 'Arts and Food reviews',
-    accent: '#b9770e',
-  },
-};
-
-export function getPostSlug(id: string, data?: { slug?: string }): string {
-  if (data?.slug) return data.slug;
-  return id.replace(/^\d{4}-\d{2}-\d{2}-/, '');
-}
-
-export function getPostCategory(category: string | string[] | undefined): string {
-  if (Array.isArray(category)) return category[0] || 'article';
-  return category || 'article';
-}
-
-export function getPostsByCategory(posts: CollectionEntry<'posts'>[]): Record<string, CollectionEntry<'posts'>[]> {
-  const grouped: Record<string, CollectionEntry<'posts'>[]> = {};
-  for (const post of posts) {
-    const cat = getPostCategory(post.data.category);
-    if (!grouped[cat]) grouped[cat] = [];
-    grouped[cat].push(post);
-  }
-  return grouped;
 }

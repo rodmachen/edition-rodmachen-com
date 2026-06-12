@@ -1,0 +1,13 @@
+{
+  "step": 15,
+  "status": "success",
+  "commit": "64b332e",
+  "ci_run_url": "https://github.com/rodmachen/edition-rodmachen-com/actions/runs/27413471688",
+  "addressed": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  "deferred": [],
+  "new_issues": [
+    "CI Node.js 20 deprecation annotation (actions/checkout@v4, actions/setup-node@v4) — pre-existing, non-blocking until Sep 2026",
+    "tsconfig.json needed docs/ exclude to prevent astro check from scanning untracked design-sync .astro files in docs/implementation/ — fixed in this commit"
+  ],
+  "blockers": []
+}

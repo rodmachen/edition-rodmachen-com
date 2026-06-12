@@ -1,100 +1,262 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import { CATEGORY_CONFIG } from '../utils/posts';
+import { CATEGORY_CONFIG, getPostCategory, getCategoryPath } from '../utils/posts';
 
 interface Props {
   title: string;
   subTitle?: string;
   date: Date;
   tags?: string[];
-  category?: string;
+  category?: string | string[];
   template?: string;
   ogImage?: string;
 }
 
 const { title, subTitle, date, tags, category, template = 'article', ogImage } = Astro.props;
 
-const formattedDate = date.toLocaleDateString('en-US', {
+// Dotted archival date for mono display
+function dot(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}.${m}.${day}`;
+}
+
+const longDate = date.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
 
-const config = CATEGORY_CONFIG[template] || CATEGORY_CONFIG.article;
+// Map template key to dark-mode-aware CSS variable
+const ACCENT_VAR: Record<string, string> = {
+  newsletter: 'var(--accent-newsletter)',
+  article:    'var(--accent-articles)',
+  review:     'var(--accent-reviews)',
+  byline:     'var(--accent-bylines)',
+};
+const postAccent = ACCENT_VAR[template] ?? 'var(--accent)';
+
+const catKey = getPostCategory(category);
+const sectionPath = getCategoryPath(catKey);
+const sectionLabel = CATEGORY_CONFIG[catKey]?.label ?? (CATEGORY_CONFIG[template]?.label ?? 'Edition');
 ---
 
 <BaseLayout title={`${title} | Edition`} ogImage={ogImage}>
-  <article class={`post post--${template}`}>
+  <article
+    class={`post post--${template}`}
+    style={`--post-accent: ${postAccent}`}
+  >
     <header class="post-header">
-      {template === 'newsletter' && <span class="template-badge">Newsletter</span>}
+      <nav class="post-breadcrumb" aria-label="Section">
+        <a href={`/${sectionPath}/`}>{sectionLabel}</a>
+        {template === 'newsletter' && (
+          <span class="hangman-tag">The Hangman Chronicles</span>
+        )}
+      </nav>
+
+      {template === 'newsletter' && (
+        <span class="section-badge">Dispatch</span>
+      )}
+
       <h1>{title}</h1>
-      {subTitle && <p class="subtitle">{subTitle}</p>}
-      <time datetime={date.toISOString().split('T')[0]}>{formattedDate}</time>
+      {subTitle && <p class="post-subtitle">{subTitle}</p>}
+
+      <div class="post-dateline">
+        <time datetime={date.toISOString().split('T')[0]}>{dot(date)}</time>
+        <span class="dateline-long">{longDate}</span>
+      </div>
     </header>
-    <div class="post-content">
+
+    <div class="post-body">
       <slot />
     </div>
+
     {tags && tags.length > 0 && (
       <footer class="post-tags">
-        {tags.map(tag => (
-          <a href={`/topics/${tag}/`} class="tag">{tag}</a>
-        ))}
+        <span class="tags-label mono-label">Topics</span>
+        <div class="tag-links">
+          {tags.map(tag => (
+            <a href={`/topics/${tag}/`} class="tag-link">{tag}</a>
+          ))}
+        </div>
       </footer>
     )}
   </article>
 </BaseLayout>
 
-<style define:vars={{ accent: config.accent }}>
-  .post-header {
-    margin-bottom: 2rem;
+<style>
+  /* ---- Post wrapper ------------------------------------------------- */
+  .post {
+    max-width: 700px;
+    margin: 0 auto;
+    padding-top: 2rem;
   }
 
-  .template-badge {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 600;
+  /* ---- Header ------------------------------------------------------- */
+  .post-breadcrumb {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-mono);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--accent);
-    display: inline-block;
-    margin-bottom: 0.5rem;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.4rem;
+    flex-wrap: wrap;
   }
 
-  .post--newsletter h1 {
-    color: var(--accent);
+  .post-breadcrumb a {
+    color: var(--post-accent);
   }
 
-  .subtitle {
-    font-size: 1.25rem;
-    color: var(--color-text-light);
-    margin-top: 0.25rem;
-    margin-bottom: 0.5rem;
+  .post-breadcrumb a:hover {
+    opacity: 0.75;
+  }
+
+  .hangman-tag {
+    color: var(--ink-soft);
     font-style: italic;
   }
 
-  time {
-    font-family: var(--font-sans);
-    font-size: 0.85rem;
-    color: var(--color-text-light);
+  .section-badge {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--post-accent);
+    margin-bottom: 0.7rem;
   }
 
-  .post-content {
-    margin-bottom: 2rem;
+  .post-header h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 0.55rem;
   }
 
+  .post--newsletter .post-header h1 {
+    color: var(--post-accent);
+  }
+
+  .post-subtitle {
+    font-family: var(--font-text);
+    font-size: 1.25rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 0 0 0.7rem;
+    line-height: 1.35;
+  }
+
+  .post-dateline {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    border-top: var(--rule-thin) solid var(--rule);
+    border-bottom: var(--rule-thin) solid var(--rule);
+    padding: 0.55rem 0;
+    margin-top: 0.75rem;
+  }
+
+  .post-dateline time {
+    color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+
+  .dateline-long {
+    text-transform: uppercase;
+  }
+
+  /* ---- Post body / prose -------------------------------------------- */
+  .post-body {
+    margin-top: 2.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Prose overrides scoped to this component */
+  .post-body :global(p) {
+    font-family: var(--font-text);
+    font-size: var(--text-base);
+    line-height: 1.75;
+    margin-bottom: 1.4rem;
+  }
+
+  .post-body :global(h2),
+  .post-body :global(h3),
+  .post-body :global(h4) {
+    font-family: var(--font-display);
+    margin-top: 2.25rem;
+    margin-bottom: 0.75rem;
+    color: var(--ink);
+  }
+
+  .post-body :global(a) {
+    color: var(--post-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+
+  .post-body :global(a:hover) {
+    opacity: 0.8;
+  }
+
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    margin: 0 0 1.4rem 1.5rem;
+    line-height: 1.7;
+  }
+
+  .post-body :global(li) {
+    margin-bottom: 0.4rem;
+  }
+
+  .post-body :global(blockquote) {
+    /* inherits from global.css blockquote styles */
+  }
+
+  /* Cloudinary figures — styled globally in global.css; no changes here */
+
+  /* ---- Tags footer -------------------------------------------------- */
   .post-tags {
-    border-top: 1px solid var(--color-border);
+    border-top: 2px solid var(--ink);
     padding-top: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .tags-label {
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+
+  .tag-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.45rem;
   }
 
-  .tag {
-    font-family: var(--font-sans);
-    font-size: 0.8rem;
-    background: var(--color-bg-muted);
-    padding: 0.2rem 0.6rem;
-    border-radius: 3px;
+  .tag-link {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    border: var(--rule-thin) solid var(--rule);
+    border-radius: 20px;
+    padding: 0.25rem 0.8rem;
+    text-decoration: none;
+  }
+
+  .tag-link:hover {
+    color: var(--post-accent);
+    border-color: var(--post-accent);
   }
 </style>

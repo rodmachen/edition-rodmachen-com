@@ -1,0 +1,12 @@
+{
+  "step": 14,
+  "status": "success",
+  "commit": "7f5f988",
+  "ci_run_url": "https://github.com/rodmachen/edition-rodmachen-com/actions/runs/27412528021",
+  "decisions": [
+    "README covers both sites, commands, deployment, scripts, Astro 6 blocker, URL-migration table, and known issues in a single flat document — no nested sections beyond h2.",
+    "scripts/ documented as a table with per-script purpose rather than prose to keep it scannable.",
+    "PR checklist updated to mark Steps 0–14 done; added malformed YAML and missing Vercel env var to Open Questions alongside the existing items."
+  ],
+  "blockers": []
+}

@@ -1,0 +1,20 @@
+{
+  "step": 1,
+  "status": "success",
+  "commits": ["edbd178", "395e284"],
+  "ci_run_url": "https://github.com/rodmachen/edition-rodmachen-com/actions/runs/27396032384",
+  "extracted_slugs_module": true,
+  "test_count": 20,
+  "decisions": [
+    "Extracted pure helpers (getPostSlug, getPostCategory, formatDate, extractFirstImage, getPostsByCategory) into src/utils/slugs.ts to avoid vitest failing on the astro-cloudinary/helpers runtime import in posts.ts. posts.ts now imports from slugs.ts and re-exports, so all call sites remain unchanged.",
+    "Added PUBLIC_CLOUDINARY_CLOUD_NAME to the CI workflow env block — it is a PUBLIC_ prefixed Astro variable (already rendered into HTML for all visitors) so it is safe to include inline. Without it, the build fails when astro-cloudinary generates OG image URLs for post pages.",
+    "Used vitest local-time date constructor new Date(2023, 5, 11) in formatDate test to avoid UTC-to-local day shift that caused a spurious test failure on the initial run.",
+    "Used a generic type parameter on getPostsByCategory in slugs.ts so it accepts the full CollectionEntry shape from posts.ts without importing from astro:content in the pure helpers module."
+  ],
+  "assumptions": [
+    "PUBLIC_CLOUDINARY_CLOUD_NAME (dke4phurv) is not a secret — it is a Cloudinary cloud name already embedded in all rendered page HTML and safe for source control.",
+    "The two pre-existing astro check hints (unused 'excerpt' param in scripts/fetch-cinapse-bylines.mjs, unused 'category' prop in src/layouts/PostLayout.astro) are pre-existing and not caused by this step.",
+    "The four duplicate-id warnings from astro check are caused by modified post files in the working tree (pre-existing unstaged changes) and are not caused by this step."
+  ],
+  "blockers": []
+}
