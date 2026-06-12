@@ -134,7 +134,7 @@ Big 3 as prominent blocks with 3–5 recent posts each; bylines as a visually se
 
 - **Verify:** `npm run build` green; visual check both themes at 375/768/1280px.
 
-## Step 9: Section sub-homepages
+## Step 9: Section sub-homepages ✅
 
 - **Model/effort:** Sonnet / medium — (a) low ambiguity once tokens + home exist (pattern application), (b) low, (c) low, (d) build-verifiable. Close call vs Opus/high: per-section identity is design work, but the system from Steps 6–8 constrains it.
 - **Context-clear:** no
@@ -145,7 +145,7 @@ Real section indexes for `/newsletter/`, `/articles/`, `/reviews/` with per-sect
 
 - **Verify:** `dist/newsletter/index.html`, `dist/articles/index.html`, `dist/reviews/index.html` exist and render section-distinct styling in both themes.
 
-## Step 10: Post pages, bylines, archive, topics, about/contact restyle
+## Step 10: Post pages, bylines, archive, topics, about/contact restyle ✅
 
 - **Model/effort:** Sonnet / medium — (a) low: applying the established system, (b) one watch-item: Cloudinary figures and `getCldOgImageUrl` OG images must survive restyling, (c) moderate breadth, (d) build + spot-check verifiable.
 - **Context-clear:** no
