@@ -68,7 +68,7 @@ Unit tests for the pure helpers in `src/utils/posts.ts` (`getPostSlug`, `getPost
 
 - **Verify:** `git status --short` is clean; `npm run build` green.
 
-## Step 3: Dependency bump (within Astro 5)
+## Step 3: Dependency bump (within Astro 5) ✅
 
 - **Model/effort:** Sonnet / medium — (a) low ambiguity, (b) moderate third-party risk: minor-version Astro/adapter bumps can shift build behavior, and the custom remark Cloudinary plugin must survive, (c) moderate compounding risk if breakage goes unnoticed, (d) verifiable via build output inspection. Close call vs low; medium for the plugin check.
 - **Context-clear:** no
