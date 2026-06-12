@@ -2,9 +2,99 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="About | Rod Machen">
-  <h1>About</h1>
-  <p>Rod Machen is a freelance writer based in Austin, Texas.</p>
-  <p>His main areas of interests are food, television, books, visual arts, and local culture of all kinds.</p>
-  <p>His work frequently appears in the Austin Chronicle.</p>
+<BaseLayout
+  title="About | Edition"
+  description="Rod Machen is a writer based in Austin, Texas."
+>
+  <div class="about-page">
+    <header class="about-header">
+      <h1>About</h1>
+      <p class="about-dateline">Rod Machen &middot; Austin, Texas</p>
+    </header>
+
+    <div class="about-prose">
+      <p>Rod Machen is a freelance writer based in Austin, Texas.</p>
+      <p>His main areas of interest are food, television, books, visual arts, and local culture of all kinds.</p>
+      <p>His work frequently appears in the <a href="https://www.austinchronicle.com" target="_blank" rel="noopener">Austin Chronicle</a>.</p>
+      <p>Edition is his ongoing publication — a place for dispatches, reviews, and longer pieces about the things that matter.</p>
+    </div>
+
+    <nav class="about-nav">
+      <a href="/newsletter/">Newsletter</a>
+      <a href="/articles/">Articles</a>
+      <a href="/reviews/">Reviews</a>
+      <a href="/bylines/">Bylines</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+  </div>
 </BaseLayout>
+
+<style>
+  .about-page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding-top: 2rem;
+  }
+
+  .about-header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1.25rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .about-header h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.2rem, 6vw, 3.2rem);
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+
+  .about-dateline {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .about-prose p {
+    font-family: var(--font-text);
+    font-size: var(--text-base);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  .about-prose a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .about-prose a:hover {
+    opacity: 0.8;
+  }
+
+  .about-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    border-top: var(--rule-thin) solid var(--rule);
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .about-nav a {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .about-nav a:hover {
+    color: var(--accent);
+  }
+</style>

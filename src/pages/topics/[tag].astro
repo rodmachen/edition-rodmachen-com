@@ -13,14 +13,10 @@ export const getStaticPaths = (async () => {
 
   const tagSet = new Set<string>();
   for (const post of posts) {
-    for (const tag of post.data.tags || []) {
-      tagSet.add(tag);
-    }
+    for (const tag of post.data.tags || []) tagSet.add(tag);
   }
   for (const byline of bylines) {
-    for (const tag of byline.data.tags || []) {
-      tagSet.add(tag);
-    }
+    for (const tag of byline.data.tags || []) tagSet.add(tag);
   }
 
   return [...tagSet].map((tag) => ({
@@ -34,12 +30,8 @@ const posts = getPublishedPosts(await getCollection('posts'));
 const bylines = await getCollection('bylines');
 
 const items: ListItem[] = [
-  ...posts
-    .filter((p) => p.data.tags?.includes(tag))
-    .map(postToListItem),
-  ...bylines
-    .filter((b) => b.data.tags?.includes(tag))
-    .map(bylineToListItem),
+  ...posts.filter((p) => p.data.tags?.includes(tag)).map(postToListItem),
+  ...bylines.filter((b) => b.data.tags?.includes(tag)).map(bylineToListItem),
 ].sort((a, b) => b.date.getTime() - a.date.getTime());
 ---
 
@@ -48,7 +40,7 @@ const items: ListItem[] = [
 
   <PostCardList items={items} />
 
-  <nav class="page-nav">
+  <nav class="page-nav" aria-label="Back">
     <a href="/topics/">&larr; All Topics</a>
   </nav>
 </BaseLayout>
@@ -56,10 +48,18 @@ const items: ListItem[] = [
 <style>
   .page-nav {
     text-align: center;
+    padding: 1rem 0 0.5rem;
   }
 
   .page-nav a {
-    font-family: var(--font-sans);
-    font-size: 0.85rem;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .page-nav a:hover {
+    color: var(--accent);
   }
 </style>
