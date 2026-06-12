@@ -44,7 +44,7 @@ Sonnet / low, tests-alongside (no tests), context-clear: no.
 
 - **Verify:** `git branch --show-current` prints `feature/edition-rebuild`; PR exists via `gh pr view`.
 
-## Step 1: Test framework + CI
+## Step 1: Test framework + CI ✅
 
 - **Model/effort:** Sonnet / medium — (a) low ambiguity (standard vitest + Actions setup), (b) minor third-party wrinkle: vitest importing `posts.ts` may trip on the runtime `astro-cloudinary/helpers` import (the `astro:content` import is type-only and strips fine) — if so, extract pure helpers to `src/utils/slugs.ts`, (c) low compounding risk, (d) easy to verify. Routine implementation.
 - **Context-clear:** no
