@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!--
+  rodmachen.com — Home A · "The Calling Card": A refined, dark editorial hub. High-contrast Bodoni Moda nameplate over Hanken Grotesk, warm amber accent, generous negative space.
+  An engraved-stationery feel: the destinations laid out as a precise index. Dark by default via prefers-color-scheme.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rod Machen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0e0c; --bg-2:#16140f; --ink:#f2ece0; --ink-soft:#9c9384; --amber:#e0a23c; --amber-2:#c98729;
+  --line:#2a261e; --line-2:#3a342a;
+  --display:'Bodoni Moda',Georgia,serif; --sans:'Hanken Grotesk','Helvetica Neue',sans-serif;
+}
+@media (prefers-color-scheme:light){
+  :root{--bg:#f4efe6;--bg-2:#ece4d4;--ink:#1a1712;--ink-soft:#6c6253;--amber:#a9711b;--amber-2:#8c5d12;--line:#ddd2bd;--line-2:#cbbfa4;}
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  min-height:100vh;display:flex;flex-direction:column;
+  background-image:radial-gradient(ellipse 80% 50% at 50% -8%,rgba(224,162,60,.10),transparent 60%);}
+a{color:inherit;text-decoration:none}
+.shell{flex:1;max-width:920px;width:100%;margin:0 auto;padding:54px 28px 40px;display:flex;flex-direction:column}
+/* header */
+.eyebrow{font-weight:700;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--amber);display:flex;align-items:center;gap:12px}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--line-2)}
+.name{font-family:var(--display);font-weight:500;font-size:clamp(64px,16vw,168px);line-height:.86;letter-spacing:-.02em;margin:22px 0 0}
+.name .last{display:block;font-style:italic;font-weight:600;color:var(--amber)}
+.tagline{font-family:var(--display);font-size:clamp(19px,3vw,26px);font-style:italic;color:var(--ink-soft);max-width:32ch;margin-top:24px;line-height:1.3}
+.bio{max-width:54ch;margin-top:18px;color:var(--ink-soft);font-size:16.5px}
+.bio b{color:var(--ink);font-weight:600}
+/* primary destinations */
+.lab{font-weight:700;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);margin:48px 0 4px;display:flex;align-items:center;gap:12px}
+.lab::after{content:"";flex:1;height:1px;background:var(--line)}
+.sites{display:grid;grid-template-columns:1fr;gap:0}
+.site{display:flex;align-items:baseline;gap:18px;padding:20px 4px;border-bottom:1px solid var(--line);transition:padding-left .2s,border-color .2s;position:relative}
+.site:hover{padding-left:16px;border-color:var(--line-2)}
+.site .idx{font-family:var(--display);font-size:14px;color:var(--amber);width:34px;flex:none}
+.site .main{flex:1;min-width:0}
+.site .main .t{font-family:var(--display);font-size:clamp(24px,4.5vw,34px);font-weight:600;line-height:1;letter-spacing:-.01em}
+.site .main .d{color:var(--ink-soft);font-size:15px;margin-top:5px}
+.site .host{font-weight:600;font-size:13px;letter-spacing:.02em;color:var(--ink-soft);white-space:nowrap}
+.site .arr{font-size:20px;color:var(--amber);transition:transform .2s;flex:none}
+.site:hover .arr{transform:translate(4px,-4px)}
+@media(max-width:560px){.site .host{display:none}}
+/* secondary: writing + social */
+.cols{display:grid;grid-template-columns:1fr;gap:34px;margin-top:46px}
+@media(min-width:720px){.cols{grid-template-columns:1fr 1fr}}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-2);border-radius:40px;padding:9px 16px;font-weight:600;font-size:14px;color:var(--ink);transition:.18s}
+.chip:hover{background:var(--amber);color:#0f0e0c;border-color:var(--amber)}
+.chip .pub{color:var(--ink-soft);font-weight:500;font-size:12px}
+.chip:hover .pub{color:#0f0e0c}
+/* footer */
+footer{border-top:1px solid var(--line);margin-top:8px}
+footer .inner{max-width:920px;margin:0 auto;padding:26px 28px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--ink-soft)}
+footer a:hover{color:var(--amber)}
+</style>
+</head>
+<body>
+<main class="shell">
+  <div class="eyebrow">Austin, Texas</div>
+  <h1 class="name">Rod<span class="last">Machen</span></h1>
+  <p class="tagline">Writer, editor &amp; engineering manager.</p>
+  <p class="bio">I write about <b>film, food, music, and the examined life</b> — and I build software and the teams that ship it. This is the front door to everything: the publication, the code, the photographs, and the work I've filed elsewhere.</p>
+
+  <div class="lab">Destinations</div>
+  <div class="sites">
+    <a class="site" href="https://edition.rodmachen.com">
+      <span class="idx">01</span>
+      <span class="main"><span class="t">The Edition</span><span class="d">Ten years of newsletters, criticism &amp; essays.</span></span>
+      <span class="host">edition.rodmachen.com</span><span class="arr">↗</span>
+    </a>
+    <a class="site" href="https://code.rodmachen.com">
+      <span class="idx">02</span>
+      <span class="main"><span class="t">Code</span><span class="d">Projects, experiments &amp; engineering notes.</span></span>
+      <span class="host">code.rodmachen.com</span><span class="arr">↗</span>
+    </a>
+    <a class="site" href="https://photo.rodmachen.com">
+      <span class="idx">03</span>
+      <span class="main"><span class="t">Photographs</span><span class="d">A standing gallery from Austin and the road.</span></span>
+      <span class="host">photo.rodmachen.com</span><span class="arr">↗</span>
+    </a>
+  </div>
+
+  <div class="cols">
+    <div>
+      <div class="lab" style="margin-top:0">Bylines</div>
+      <div class="chips">
+        <a class="chip" href="#">Austin Chronicle <span class="pub">author page</span></a>
+        <a class="chip" href="#">Cinapse <span class="pub">film reviews</span></a>
+      </div>
+    </div>
+    <div>
+      <div class="lab" style="margin-top:0">Elsewhere</div>
+      <div class="chips">
+        <a class="chip" href="#">Letterboxd</a>
+        <a class="chip" href="#">Bluesky</a>
+        <a class="chip" href="#">Instagram</a>
+        <a class="chip" href="#">LinkedIn</a>
+        <a class="chip" href="#">GitHub</a>
+      </div>
+    </div>
+  </div>
+</main>
+<footer><div class="inner">
+  <span>© 2026 Rod Machen</span>
+  <span><a href="mailto:#">rod@rodmachen.com</a></span>
+</div></footer>
+</body>
+</html>

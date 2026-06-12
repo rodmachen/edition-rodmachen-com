@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!--
+  Option A — "The Broadsheet": A literary-review masthead in the lineage of NYRB and The Paris Review.
+  Cream paper, ink black, a single oxblood accent; Fraunces display over a Newsreader text column. Quiet, authored, print-first.
+-->
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>edition.rodmachen.com — Option A · The Broadsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4efe4; --paper-2:#ece5d4; --ink:#1c1815; --ink-soft:#4a4239;
+  --rule:#cabf9f; --rule-soft:#ddd4bd; --accent:#8a2b1f; --accent-2:#b8654a;
+  --gold:#9a7b32;
+  --serif:'Fraunces',Georgia,serif; --text:'Newsreader','Iowan Old Style',Georgia,serif;
+}
+html[data-theme="dark"]{
+  --paper:#16130f; --paper-2:#1f1a14; --ink:#ece4d2; --ink-soft:#b3a98f;
+  --rule:#473e2d; --rule-soft:#2c261c; --accent:#e07a5f; --accent-2:#c8643f;
+  --gold:#c9a14a;
+}
+@media (prefers-color-scheme:dark){html:not([data-theme]){--paper:#16130f;--paper-2:#1f1a14;--ink:#ece4d2;--ink-soft:#b3a98f;--rule:#473e2d;--rule-soft:#2c261c;--accent:#e07a5f;--accent-2:#c8643f;--gold:#c9a14a;}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink); font-family:var(--text);
+  font-size:19px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(var(--rule-soft) 0.5px,transparent 0.5px);
+  background-size:22px 22px;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.col{max-width:680px}
+/* ---- toggle ---- */
+.toggle{position:fixed;top:18px;right:18px;z-index:50;display:flex;gap:0;border:1px solid var(--ink);
+  background:var(--paper);font-family:var(--serif);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.toggle button{background:transparent;border:0;color:var(--ink-soft);padding:7px 11px;cursor:pointer;font:inherit}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+/* ---- masthead ---- */
+.masthead{border-bottom:3px double var(--ink);padding-top:34px}
+.kicker{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--serif);
+  font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);padding-bottom:14px}
+.kicker .est{color:var(--accent)}
+.title{font-family:var(--serif);font-weight:300;font-size:clamp(48px,11vw,124px);line-height:.92;
+  letter-spacing:-.02em;text-align:center;padding:6px 0 4px}
+.title b{font-weight:600;font-style:italic}
+.subhead{text-align:center;font-family:var(--serif);font-size:13px;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--ink-soft);padding:10px 0 20px}
+nav.primary{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  display:flex;flex-wrap:wrap;justify-content:center;gap:2px 0;font-family:var(--serif);
+  font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+nav.primary a{padding:11px 20px;position:relative;color:var(--ink-soft);transition:color .2s}
+nav.primary a+a::before{content:"";position:absolute;left:0;top:24%;height:52%;border-left:1px solid var(--rule)}
+nav.primary a:hover{color:var(--accent)}
+/* ---- section grid ---- */
+.big3{display:grid;grid-template-columns:1fr;gap:0;padding-top:6px}
+@media(min-width:920px){.big3{grid-template-columns:1.25fr 1fr 1fr}.big3 .sec+ .sec{border-left:1px solid var(--rule)}}
+.sec{padding:30px 26px 34px}
+.sec-h{display:flex;align-items:baseline;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:9px;margin-bottom:8px}
+.sec-h h2{font-family:var(--serif);font-weight:600;font-size:23px;letter-spacing:-.01em}
+.sec-h .lede{font-family:var(--serif);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-left:auto}
+.feat{padding:18px 0;border-bottom:1px solid var(--rule-soft)}
+.feat:last-child{border-bottom:0}
+.feat .meta{font-family:var(--serif);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);display:flex;gap:10px;margin-bottom:5px}
+.feat .meta .cat{color:var(--accent)}
+.feat h3{font-family:var(--text);font-weight:600;font-size:21px;line-height:1.18;letter-spacing:-.01em}
+.feat.lead h3{font-family:var(--serif);font-size:30px;font-weight:400;line-height:1.06}
+.feat p{font-size:16px;color:var(--ink-soft);margin-top:6px;font-style:italic}
+.feat a:hover h3{color:var(--accent)}
+.dropcap{font-family:var(--serif);float:left;font-size:62px;line-height:.74;padding:6px 10px 0 0;color:var(--accent);font-weight:500}
+/* ---- bylines strip ---- */
+.bylines{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);background:var(--paper-2);padding:18px 0}
+.bylines .inner{display:flex;flex-wrap:wrap;align-items:center;gap:6px 26px}
+.bylines .lab{font-family:var(--serif);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+.bylines a{font-size:15px;font-style:italic;color:var(--ink-soft);border-bottom:1px solid transparent}
+.bylines a:hover{color:var(--ink);border-color:var(--accent)}
+.bylines a span{font-style:normal;font-family:var(--serif);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-left:5px}
+/* ---- footer links ---- */
+footer.quiet{padding:26px 0 60px;text-align:center}
+footer.quiet a{font-family:var(--serif);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin:0 14px}
+footer.quiet a:hover{color:var(--accent)}
+footer.quiet .topics{margin-top:14px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+footer.quiet .topics a{border:1px solid var(--rule);border-radius:20px;padding:4px 13px;letter-spacing:.08em}
+/* ---- page dividers (mockup only) ---- */
+.divider{background:var(--ink);color:var(--paper);font-family:var(--serif);font-size:12px;
+  letter-spacing:.3em;text-transform:uppercase;text-align:center;padding:11px;margin-top:0}
+.divider span{color:var(--gold)}
+/* ---- reviews index ---- */
+.idx-head{padding:40px 0 8px}
+.idx-head .eyebrow{font-family:var(--serif);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent)}
+.idx-head h1{font-family:var(--serif);font-weight:300;font-size:clamp(40px,8vw,76px);line-height:.96;letter-spacing:-.02em}
+.idx-head h1 i{font-weight:600}
+.idx-head .filters{display:flex;flex-wrap:wrap;gap:18px;border-top:1px solid var(--ink);margin-top:18px;padding-top:12px;font-family:var(--serif);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.idx-head .filters a{color:var(--ink-soft)}.idx-head .filters a.on{color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:3px}
+.review-list{padding:8px 0 50px}
+.rrow{display:grid;grid-template-columns:90px 1fr auto;gap:22px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--rule-soft)}
+.rrow .num{font-family:var(--serif);font-size:13px;color:var(--gold);letter-spacing:.1em}
+.rrow h3{font-family:var(--serif);font-weight:400;font-size:27px;line-height:1.05;letter-spacing:-.01em}
+.rrow h3 a:hover{color:var(--accent)}
+.rrow .sub{font-style:italic;color:var(--ink-soft);font-size:16px;margin-top:4px}
+.rrow .tag{font-family:var(--serif);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+@media(max-width:620px){.rrow{grid-template-columns:1fr;gap:4px}.rrow .num{display:none}}
+/* ---- post ---- */
+.post{padding:46px 0 70px}
+.post-head{text-align:center;max-width:760px;margin:0 auto 30px}
+.post-head .cat{font-family:var(--serif);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent)}
+.post-head h1{font-family:var(--serif);font-weight:300;font-size:clamp(38px,7vw,68px);line-height:1.0;letter-spacing:-.02em;margin:10px 0 6px}
+.post-head .by{font-family:var(--serif);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+.post-body{margin:0 auto;max-width:660px;font-size:20px;line-height:1.74}
+.post-body p{margin-bottom:1.3rem}
+.post-body p+p{text-indent:1.5em}
+.post-body figure{margin:34px 0}
+.post-body figure .ph{aspect-ratio:16/9;background:
+  repeating-linear-gradient(45deg,var(--paper-2),var(--paper-2) 14px,var(--rule-soft) 14px,var(--rule-soft) 28px);
+  border:1px solid var(--rule);display:flex;align-items:center;justify-content:center}
+.post-body figure .ph span{font-family:var(--serif);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+.post-body figcaption{font-family:var(--serif);font-size:13px;color:var(--ink-soft);text-align:center;margin-top:9px;font-style:italic}
+.post-body blockquote{border:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+  margin:34px -10px;padding:24px 30px;font-family:var(--serif);font-style:italic;font-weight:300;
+  font-size:27px;line-height:1.3;text-align:center;color:var(--ink)}
+.post-body blockquote cite{display:block;font-style:normal;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-top:14px}
+</style>
+</head>
+<body>
+<div class="toggle" role="group" aria-label="Color theme">
+  <button id="tL" aria-pressed="true">Day</button>
+  <button id="tD" aria-pressed="false">Night</button>
+</div>
+
+<!-- ============ HOME ============ -->
+<header class="masthead">
+  <div class="wrap">
+    <div class="kicker"><span class="est">Est. 2013 · Austin, Texas</span><span>Wednesday Edition</span></div>
+    <h1 class="title">The <b>Edition</b></h1>
+    <div class="subhead">Rod Machen · Writing on Film, Food, Music &amp; the Examined Life</div>
+  </div>
+  <nav class="primary">
+    <a href="#">Newsletter</a><a href="#reviews">Articles</a><a href="#reviews">Reviews</a><a href="#">Bylines</a><a href="#">Archive</a><a href="#">Topics</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <div class="big3">
+    <section class="sec">
+      <div class="sec-h"><h2>Newsletter</h2><span class="lede">The Hangman Chronicles</span></div>
+      <article class="feat lead"><div class="meta"><span class="cat">Dispatch</span><span>May 27, 2025</span></div>
+        <a href="#"><h3><span class="dropcap">S</span>unday Brunch with Franklin &amp; Friends</h3><p>Once again, the pitmaster opens the gates — and a city lines up.</p></a></article>
+      <article class="feat"><div class="meta"><span class="cat">Dispatch</span><span>Feb 25, 2024</span></div><a href="#"><h3>ATX Open 2024: Opening Weekend</h3></a></article>
+      <article class="feat"><div class="meta"><span class="cat">Dispatch</span><span>Mar 7, 2023</span></div><a href="#"><h3>Tennis, Tennis, and More Tennis</h3></a></article>
+      <article class="feat"><div class="meta"><span class="cat">Dispatch</span><span>Jan 9, 2023</span></div><a href="#"><h3>Yellowstone, Debussy &amp; the Love</h3></a></article>
+    </section>
+
+    <section class="sec">
+      <div class="sec-h"><h2>Articles</h2><span class="lede">Essays &amp; Notes</span></div>
+      <article class="feat"><div class="meta"><span class="cat">Music</span><span>Feb 25, 2014</span></div><a href="#"><h3>Neutral Milk Hotel: A Retro-Scenester Adventure</h3></a></article>
+      <article class="feat"><div class="meta"><span class="cat">Television</span><span>Apr 23, 2014</span></div><a href="#"><h3>Mad Men, Mad Women</h3></a></article>
+      <article class="feat"><div class="meta"><span class="cat">Festival</span><span>Mar 18, 2014</span></div><a href="#"><h3>SXSW: Long Live SXSW</h3></a></article>
+      <article class="feat"><div class="meta"><span class="cat">Essay</span><span>Feb 11, 2014</span></div><a href="#"><h3>In Defense of Long Lines (Sort Of)</h3></a></article>
+      <article class="feat"><div class="meta"><span class="cat">Sport</span><span>Jan 16, 2014</span></div><a href="#"><h3>A Year in the Life of an Aggie Football Fan</h3></a></article>
+    </section>
+
+    <section class="sec">
+      <div class="sec-h"><h2>Reviews</h2><span class="lede">Film · TV · Food</span></div>
+      <article class="feat"><div class="meta"><span class="cat">Film</span><span>Mar 27, 2014</span></div><a href="#post"><h3>The Grand Budapest Hotel</h3></a></article>
+      <article class="feat"><div class="meta"><span class="cat">Television</span><span>Apr 7, 2014</span></div><a href="#"><h3>Game of Thrones: Two Swords</h3></a></article>
+      <article class="feat"><div class="meta"><span class="cat">Food</span><span>Feb 20, 2014</span></div><a href="#"><h3>First Look: Kerlin BBQ</h3></a></article>
+      <article class="feat"><div class="meta"><span class="cat">Dance</span><span>Dec 26, 2013</span></div><a href="#"><h3>Ballet Austin's The Nutcracker</h3></a></article>
+      <article class="feat"><div class="meta"><span class="cat">Food</span><span>Jan 23, 2014</span></div><a href="#"><h3>The Dai Due Breakfast Sandwich</h3></a></article>
+    </section>
+  </div>
+</main>
+
+<section class="bylines"><div class="wrap"><div class="inner">
+  <span class="lab">Bylines elsewhere →</span>
+  <a href="#">Catching Up with Aaron Franklin<span>Austin Chronicle</span></a>
+  <a href="#">Blade Runner 2049: Five Great Things<span>Cinapse</span></a>
+  <a href="#">If Beale Street Could Talk Is Breathtaking<span>Cinapse</span></a>
+  <a href="#">Was the Foodways Texas Symposium Worth the Price?<span>Austin Chronicle</span></a>
+</div></div></section>
+
+<footer class="quiet"><div class="wrap">
+  <a href="#">The Full Archive</a><a href="#">RSS</a><a href="#">About</a><a href="#">Contact</a>
+  <div class="topics">
+    <a href="#">Film</a><a href="#">Television</a><a href="#">Food &amp; BBQ</a><a href="#">Music</a><a href="#">Tennis</a><a href="#">SXSW</a><a href="#">Austin</a><a href="#">Books</a>
+  </div>
+</div></footer>
+
+<!-- ============ SECTION INDEX ============ -->
+<div class="divider">▼ Section Index — <span>/reviews</span></div>
+<section class="wrap">
+  <div class="idx-head">
+    <div class="eyebrow">The Edition · Criticism</div>
+    <h1>Reviews <i>&amp; Notices</i></h1>
+    <div class="filters"><a href="#" class="on">All</a><a href="#">Film</a><a href="#">Television</a><a href="#">Food</a><a href="#">Music</a><a href="#">Dance</a></div>
+  </div>
+  <div class="review-list">
+    <div class="rrow"><span class="num">№ 01</span><div><h3><a href="#post">The Grand Budapest Hotel</a></h3><div class="sub">Wes Anderson builds his most intricate dollhouse yet.</div></div><span class="tag">Film · Mar 2014</span></div>
+    <div class="rrow"><span class="num">№ 02</span><div><h3><a href="#">Game of Thrones: Two Swords</a></h3><div class="sub">Westeros returns, knives already drawn.</div></div><span class="tag">TV · Apr 2014</span></div>
+    <div class="rrow"><span class="num">№ 03</span><div><h3><a href="#">First Look: Kerlin BBQ</a></h3><div class="sub">A trailer on Cesar Chavez quietly raising the bar.</div></div><span class="tag">Food · Feb 2014</span></div>
+    <div class="rrow"><span class="num">№ 04</span><div><h3><a href="#">Must-Try: Austin Land &amp; Cattle Company</a></h3><div class="sub">An old-school steakhouse that still earns its char.</div></div><span class="tag">Food · Feb 2014</span></div>
+    <div class="rrow"><span class="num">№ 05</span><div><h3><a href="#">Ballet Austin's The Nutcracker</a></h3><div class="sub">Dressing up, and the small pleasures of tradition.</div></div><span class="tag">Dance · Dec 2013</span></div>
+    <div class="rrow"><span class="num">№ 06</span><div><h3><a href="#">Man Bites Dog: A Hot Dog in the City</a></h3><div class="sub">Notes on a humble, perfect lunch.</div></div><span class="tag">Food · Jan 2014</span></div>
+  </div>
+</section>
+
+<!-- ============ POST ============ -->
+<div class="divider">▼ Article Page — <span>The Grand Budapest Hotel</span></div>
+<article class="post wrap">
+  <div class="post-head">
+    <div class="cat">Reviews · Film</div>
+    <h1>The Grand Budapest Hotel</h1>
+    <div class="by">By Rod Machen · March 27, 2014</div>
+  </div>
+  <div class="post-body col" style="max-width:660px;margin:0 auto">
+    <p>My basic inclination is, like many, to like every new film from Wes Anderson. He had me at <em>Bottle Rocket</em>, and even the ones I haven't enjoyed as much — <em>The Life Aquatic</em>, <em>The Darjeeling Limited</em> — haven't pushed me away.</p>
+    <p>So I walked into <em>The Grand Budapest Hotel</em> predisposed to delight, which is a dangerous way to enter a theater. The danger here, it turns out, is irrelevant. This is Anderson at full bloom: a nested set of stories, a doomed concierge, and a lobby boy whose loyalty becomes the film's beating heart.</p>
+    <figure>
+      <div class="ph"><span>Figure · Ralph Fiennes as M. Gustave</span></div>
+      <figcaption>Ralph Fiennes as M. Gustave H., the concierge whose manners outlast his world.</figcaption>
+    </figure>
+    <p>The symmetry is doing real work, not just decoration. Every frame is a vitrine, and inside each one Anderson arranges grief and farce with the same careful hand. It should feel airless. It doesn't.</p>
+    <blockquote>The plot is a confection, but the feeling underneath is genuine loss — for a continent, a courtesy, a way of moving through the world.<cite>From the review</cite></blockquote>
+    <p>By the time the frame stories close, one inside the next, you understand that the whole elaborate machine exists to mourn something specific. That it manages to be hilarious on the way there is the trick only Anderson seems able to pull.</p>
+  </div>
+</article>
+
+<script>
+(function(){
+  var root=document.documentElement, L=document.getElementById('tL'), D=document.getElementById('tD');
+  function set(mode){
+    root.setAttribute('data-theme',mode);
+    L.setAttribute('aria-pressed', mode==='light');
+    D.setAttribute('aria-pressed', mode==='dark');
+  }
+  // respect prefers-color-scheme by default
+  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  set(prefersDark ? 'dark' : 'light');
+  L.addEventListener('click', function(){ set('light'); });
+  D.addEventListener('click', function(){ set('dark'); });
+})();
+</script>
+</body>
+</html>
