@@ -1,0 +1,30 @@
+{
+  "steps": [9, 10],
+  "status": "success",
+  "per_step": {
+    "9": {
+      "status": "success",
+      "commit": "9aa71ba"
+    },
+    "10": {
+      "status": "success",
+      "commit": "6b54f08"
+    }
+  },
+  "ci_run_url": "https://github.com/rodmachen/edition-rodmachen-com/actions/runs/27399370650",
+  "decisions": [
+    "Reviews section uses a three-column ledger-table layout (id | title/cat | right-aligned date) with stronger top/bottom rules — distinct HTML structure from Newsletter/Articles which share the 2-col dispatch catalog pattern.",
+    "Newsletter masthead uses 'The Hangman Chronicles' as both <title> and <h1> per the brief; config.label ('Newsletter') appears only in the breadcrumb nav.",
+    "PostLayout switches from define:vars with hardcoded light-mode hex values to an ACCENT_VAR map that references CSS custom properties (var(--accent-newsletter) etc.), giving dark-mode-aware per-section coloring.",
+    "PageHeader updated to use Edition tokens (Fraunces h1 at weight 400, --font-mono subtitles, --gold counts, 2px ruled border-bottom) — this uniformly improves all consumers: bylines, archive, topics.",
+    "Bylines index keeps PostCardList (with CldImage support) since bylines frequently have publication logos; the section index pages for the Big 3 use bespoke rendering without card images.",
+    "About and contact pages get Edition-native mastheads rather than using PageHeader, since they have unique sub-structure (prose body vs. definition list).",
+    "Step 9 handles bylines uniform treatment via updated PageHeader (applies to bylines/index.astro); no separate restructuring needed since bylines already used PageHeader."
+  ],
+  "assumptions": [
+    "SECTION_META for article and review falls back to config.label (from CATEGORY_CONFIG) for h1 — no custom name like 'The Hangman Chronicles' exists for those sections.",
+    "Cloudinary figures in post bodies are fully styled via global.css (figure.img-small/medium/large/full) and require no PostLayout changes — confirmed by grep of dist/ output.",
+    "The 'ruled ledger-table device from the mockup' maps to: horizontal rules between rows, right-aligned date column, compact row height with gold accent on the ID column."
+  ],
+  "blockers": []
+}

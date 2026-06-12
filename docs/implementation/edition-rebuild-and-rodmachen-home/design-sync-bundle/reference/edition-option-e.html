@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<!--
+  Option E — "The Ledger Broadsheet": a broadsheet-led hybrid (A's masthead × B's structure).
+  Keeps A's literary front page — double-rule masthead, Fraunces display over a Newsreader column, cream paper,
+  oxblood accent, light by default — but rebuilds its listings on B's structural devices: every item carries a
+  numbered index (№/issue/catalog id), the Reviews section is a ruled ledger table with mono metadata, and dates,
+  categories, and IDs are set in a typewriter mono (Spline Sans Mono) for an archival, accounted-for feel.
+  The voice stays a writer's broadsheet; the spine underneath is a catalog.
+-->
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>edition.rodmachen.com — Option E · The Ledger Broadsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4efe4; --paper-2:#ece5d4; --ink:#1c1815; --ink-soft:#4a4239;
+  --rule:#cabf9f; --rule-soft:#ddd4bd; --accent:#8a2b1f; --accent-2:#b8654a; --gold:#9a7b32;
+  --serif:'Fraunces',Georgia,serif; --text:'Newsreader','Iowan Old Style',Georgia,serif;
+  --mono:'Spline Sans Mono',ui-monospace,Menlo,monospace;
+}
+html[data-theme="dark"]{
+  --paper:#16130f; --paper-2:#1f1a14; --ink:#ece4d2; --ink-soft:#b3a98f;
+  --rule:#473e2d; --rule-soft:#2c261c; --accent:#e07a5f; --accent-2:#c8643f; --gold:#c9a14a;
+}
+@media (prefers-color-scheme:dark){html:not([data-theme]){--paper:#16130f;--paper-2:#1f1a14;--ink:#ece4d2;--ink-soft:#b3a98f;--rule:#473e2d;--rule-soft:#2c261c;--accent:#e07a5f;--accent-2:#c8643f;--gold:#c9a14a;}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink); font-family:var(--text);
+  font-size:19px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(var(--rule-soft) 0.5px,transparent 0.5px);
+  background-size:22px 22px;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.mono-lab{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+/* toggle */
+.toggle{position:fixed;top:18px;right:18px;z-index:50;display:flex;gap:0;border:1px solid var(--ink);
+  background:var(--paper);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.toggle button{background:transparent;border:0;color:var(--ink-soft);padding:7px 11px;cursor:pointer;font:inherit}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+/* masthead */
+.masthead{border-bottom:3px double var(--ink);padding-top:34px}
+.kicker{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);padding-bottom:14px}
+.kicker .est{color:var(--accent)}
+.title{font-family:var(--serif);font-weight:300;font-size:clamp(48px,11vw,124px);line-height:.92;
+  letter-spacing:-.02em;text-align:center;padding:6px 0 4px}
+.title b{font-weight:600;font-style:italic}
+.subhead{text-align:center;font-family:var(--serif);font-size:13px;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--ink-soft);padding:10px 0 20px}
+nav.primary{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  display:flex;flex-wrap:wrap;justify-content:center;gap:2px 0;font-family:var(--serif);
+  font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+nav.primary a{padding:11px 20px;position:relative;color:var(--ink-soft);transition:color .2s}
+nav.primary a+a::before{content:"";position:absolute;left:0;top:24%;height:52%;border-left:1px solid var(--rule)}
+nav.primary a:hover{color:var(--accent)}
+/* big3 grid */
+.big3{display:grid;grid-template-columns:1fr;gap:0;padding-top:6px}
+@media(min-width:920px){.big3{grid-template-columns:1.25fr 1fr 1fr}.big3 .sec+ .sec{border-left:1px solid var(--rule)}}
+.sec{padding:30px 26px 34px}
+.sec-h{display:flex;align-items:baseline;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:9px;margin-bottom:4px}
+.sec-h h2{font-family:var(--serif);font-weight:600;font-size:23px;letter-spacing:-.01em}
+.sec-h .lede{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-left:auto}
+.feat{padding:16px 0;border-bottom:1px solid var(--rule-soft);display:grid;grid-template-columns:34px 1fr;gap:0 14px}
+.feat:last-child{border-bottom:0}
+.feat .ix{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.04em;padding-top:5px;line-height:1.3}
+.feat .body{min-width:0}
+.feat .meta{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);display:flex;gap:10px;margin-bottom:5px}
+.feat .meta .cat{color:var(--accent)}
+.feat h3{font-family:var(--text);font-weight:600;font-size:21px;line-height:1.18;letter-spacing:-.01em}
+.feat.lead h3{font-family:var(--serif);font-size:29px;font-weight:400;line-height:1.06}
+.feat p{font-size:16px;color:var(--ink-soft);margin-top:6px;font-style:italic}
+.feat a:hover h3{color:var(--accent)}
+.dropcap{font-family:var(--serif);float:left;font-size:58px;line-height:.74;padding:6px 10px 0 0;color:var(--accent);font-weight:500}
+/* bylines strip */
+.bylines{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);background:var(--paper-2);padding:18px 0}
+.bylines .inner{display:flex;flex-wrap:wrap;align-items:center;gap:6px 26px}
+.bylines .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+.bylines a{font-size:15px;font-style:italic;color:var(--ink-soft);border-bottom:1px solid transparent}
+.bylines a:hover{color:var(--ink);border-color:var(--accent)}
+.bylines a span{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-left:6px}
+/* footer */
+footer.quiet{padding:26px 0 60px;text-align:center}
+footer.quiet a{font-family:var(--serif);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin:0 14px}
+footer.quiet a:hover{color:var(--accent)}
+footer.quiet .topics{margin-top:14px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+footer.quiet .topics a{font-family:var(--mono);font-size:11px;border:1px solid var(--rule);border-radius:20px;padding:4px 13px;letter-spacing:.02em;text-transform:none}
+/* dividers (mockup only) */
+.divider{background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:12px;
+  letter-spacing:.18em;text-transform:uppercase;text-align:center;padding:11px;margin-top:0}
+.divider span{color:var(--gold)}
+/* reviews index — ledger table */
+.idx-head{padding:40px 0 8px}
+.idx-head .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.idx-head h1{font-family:var(--serif);font-weight:300;font-size:clamp(40px,8vw,76px);line-height:.96;letter-spacing:-.02em}
+.idx-head h1 i{font-weight:600}
+.idx-head .filters{display:flex;flex-wrap:wrap;gap:18px;border-top:1px solid var(--ink);margin-top:18px;padding-top:12px;font-family:var(--serif);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.idx-head .filters a{color:var(--ink-soft)}.idx-head .filters a.on{color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:3px}
+table.ledger{width:100%;border-collapse:collapse;margin:14px 0 50px}
+table.ledger th{text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);border-bottom:1px solid var(--ink);padding:10px 12px 10px 0}
+table.ledger td{border-bottom:1px solid var(--rule-soft);padding:18px 12px 18px 0;vertical-align:baseline}
+table.ledger tr:hover td{background:var(--paper-2)}
+table.ledger .c-id{font-family:var(--mono);font-size:12px;color:var(--gold);width:62px;letter-spacing:.04em}
+table.ledger .c-title{font-family:var(--serif);font-weight:400;font-size:25px;letter-spacing:-.01em;line-height:1.06}
+table.ledger .c-title a:hover{color:var(--accent)}
+table.ledger .c-title small{display:block;font-family:var(--text);font-weight:400;font-size:16px;font-style:italic;color:var(--ink-soft);margin-top:5px;letter-spacing:0}
+table.ledger .c-cat{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+table.ledger .c-date{font-family:var(--mono);font-size:12px;color:var(--ink-soft);white-space:nowrap}
+@media(max-width:680px){table.ledger .c-id,table.ledger .c-date{display:none}}
+/* post */
+.post{padding:46px 0 70px}
+.post-head{text-align:center;max-width:760px;margin:0 auto 30px}
+.post-head .cat{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.post-head h1{font-family:var(--serif);font-weight:300;font-size:clamp(38px,7vw,68px);line-height:1.0;letter-spacing:-.02em;margin:10px 0 8px}
+.post-head .by{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
+.post-head .by b{color:var(--ink)}
+.post-body{margin:0 auto;max-width:660px;font-size:20px;line-height:1.74}
+.post-body p{margin-bottom:1.3rem}
+.post-body p+p{text-indent:1.5em}
+.post-body figure{margin:34px 0}
+.post-body figure .ph{aspect-ratio:16/9;background:
+  repeating-linear-gradient(45deg,var(--paper-2),var(--paper-2) 14px,var(--rule-soft) 14px,var(--rule-soft) 28px);
+  border:1px solid var(--rule);display:flex;align-items:center;justify-content:center}
+.post-body figure .ph span{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.post-body figcaption{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);text-align:center;margin-top:9px}
+.post-body figcaption::before{content:"FIG · ";color:var(--gold)}
+.post-body blockquote{border:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+  margin:34px -10px;padding:24px 30px;font-family:var(--serif);font-style:italic;font-weight:300;
+  font-size:27px;line-height:1.3;text-align:center;color:var(--ink)}
+.post-body blockquote cite{display:block;font-family:var(--mono);font-style:normal;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-top:14px}
+</style>
+</head>
+<body>
+<div class="toggle" role="group" aria-label="Color theme">
+  <button id="tL" aria-pressed="true">Day</button>
+  <button id="tD" aria-pressed="false">Night</button>
+</div>
+
+<!-- ============ HOME ============ -->
+<header class="masthead">
+  <div class="wrap">
+    <div class="kicker"><span class="est">Est. 2013 · Austin, Texas</span><span>Vol. XII · Wednesday Edition</span></div>
+    <h1 class="title">The <b>Edition</b></h1>
+    <div class="subhead">Rod Machen · Writing on Film, Food, Music &amp; the Examined Life</div>
+  </div>
+  <nav class="primary">
+    <a href="#">Newsletter</a><a href="#reviews">Articles</a><a href="#reviews">Reviews</a><a href="#">Bylines</a><a href="#">Archive</a><a href="#">Topics</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <div class="big3">
+    <section class="sec">
+      <div class="sec-h"><h2>Newsletter</h2><span class="lede">Hangman Chronicles</span></div>
+      <article class="feat lead"><span class="ix">№096</span><div class="body"><div class="meta"><span class="cat">Dispatch</span><span>2025.05.27</span></div>
+        <a href="#"><h3><span class="dropcap">O</span>nce again, the pitmaster opens the gates — and a city lines up.</h3><p>Sunday brunch with Franklin &amp; friends.</p></a></div></article>
+      <article class="feat"><span class="ix">№081</span><div class="body"><div class="meta"><span class="cat">Dispatch</span><span>2024.02.25</span></div><a href="#"><h3>ATX Open 2024: Opening Weekend</h3></a></div></article>
+      <article class="feat"><span class="ix">№067</span><div class="body"><div class="meta"><span class="cat">Dispatch</span><span>2023.03.07</span></div><a href="#"><h3>Tennis, Tennis, and More Tennis</h3></a></div></article>
+      <article class="feat"><span class="ix">№061</span><div class="body"><div class="meta"><span class="cat">Dispatch</span><span>2023.01.09</span></div><a href="#"><h3>Yellowstone, Debussy &amp; the Love</h3></a></div></article>
+    </section>
+
+    <section class="sec">
+      <div class="sec-h"><h2>Articles</h2><span class="lede">Essays &amp; Notes</span></div>
+      <article class="feat"><span class="ix">A·12</span><div class="body"><div class="meta"><span class="cat">Music</span><span>2014.02.25</span></div><a href="#"><h3>Neutral Milk Hotel: A Retro-Scenester Adventure</h3></a></div></article>
+      <article class="feat"><span class="ix">A·14</span><div class="body"><div class="meta"><span class="cat">Television</span><span>2014.04.23</span></div><a href="#"><h3>Mad Men, Mad Women</h3></a></div></article>
+      <article class="feat"><span class="ix">A·11</span><div class="body"><div class="meta"><span class="cat">Festival</span><span>2014.03.18</span></div><a href="#"><h3>SXSW: Long Live SXSW</h3></a></div></article>
+      <article class="feat"><span class="ix">A·09</span><div class="body"><div class="meta"><span class="cat">Essay</span><span>2014.02.11</span></div><a href="#"><h3>In Defense of Long Lines (Sort Of)</h3></a></div></article>
+      <article class="feat"><span class="ix">A·07</span><div class="body"><div class="meta"><span class="cat">Sport</span><span>2014.01.16</span></div><a href="#"><h3>A Year in the Life of an Aggie Football Fan</h3></a></div></article>
+    </section>
+
+    <section class="sec">
+      <div class="sec-h"><h2>Reviews</h2><span class="lede">Film · TV · Food</span></div>
+      <article class="feat"><span class="ix">R·88</span><div class="body"><div class="meta"><span class="cat">Film</span><span>2014.03.27</span></div><a href="#post"><h3>The Grand Budapest Hotel</h3></a></div></article>
+      <article class="feat"><span class="ix">R·91</span><div class="body"><div class="meta"><span class="cat">Television</span><span>2014.04.07</span></div><a href="#"><h3>Game of Thrones: Two Swords</h3></a></div></article>
+      <article class="feat"><span class="ix">R·83</span><div class="body"><div class="meta"><span class="cat">Food</span><span>2014.02.20</span></div><a href="#"><h3>First Look: Kerlin BBQ</h3></a></div></article>
+      <article class="feat"><span class="ix">R·71</span><div class="body"><div class="meta"><span class="cat">Dance</span><span>2013.12.26</span></div><a href="#"><h3>Ballet Austin's The Nutcracker</h3></a></div></article>
+      <article class="feat"><span class="ix">R·79</span><div class="body"><div class="meta"><span class="cat">Food</span><span>2014.01.23</span></div><a href="#"><h3>The Dai Due Breakfast Sandwich</h3></a></div></article>
+    </section>
+  </div>
+</main>
+
+<section class="bylines"><div class="wrap"><div class="inner">
+  <span class="lab">// Bylines elsewhere →</span>
+  <a href="#">Catching Up with Aaron Franklin<span>Austin Chronicle</span></a>
+  <a href="#">Blade Runner 2049: Five Great Things<span>Cinapse</span></a>
+  <a href="#">If Beale Street Could Talk Is Breathtaking<span>Cinapse</span></a>
+  <a href="#">Was the Foodways Texas Symposium Worth the Price?<span>Austin Chronicle</span></a>
+</div></div></section>
+
+<footer class="quiet"><div class="wrap">
+  <a href="#">The Full Archive</a><a href="#">RSS</a><a href="#">About</a><a href="#">Contact</a>
+  <div class="topics">
+    <a href="#">Film</a><a href="#">Television</a><a href="#">Food &amp; BBQ</a><a href="#">Music</a><a href="#">Tennis</a><a href="#">SXSW</a><a href="#">Austin</a><a href="#">Books</a>
+  </div>
+</div></footer>
+
+<!-- ============ SECTION INDEX ============ -->
+<div class="divider">▼ Section Index — <span>/reviews</span></div>
+<section class="wrap">
+  <div class="idx-head">
+    <div class="eyebrow">The Edition · Criticism · 162 entries</div>
+    <h1>Reviews <i>&amp; Notices</i></h1>
+    <div class="filters"><a href="#" class="on">All</a><a href="#">Film</a><a href="#">Television</a><a href="#">Food</a><a href="#">Music</a><a href="#">Dance</a></div>
+  </div>
+  <table class="ledger">
+    <thead><tr><th class="c-id">№</th><th>Title</th><th>Cat.</th><th class="c-date">Date</th></tr></thead>
+    <tbody>
+      <tr><td class="c-id">R·88</td><td class="c-title"><a href="#post">The Grand Budapest Hotel</a><small>Wes Anderson builds his most intricate dollhouse yet.</small></td><td class="c-cat">Film</td><td class="c-date">2014.03.27</td></tr>
+      <tr><td class="c-id">R·91</td><td class="c-title">Game of Thrones: Two Swords<small>Westeros returns, knives already drawn.</small></td><td class="c-cat">TV</td><td class="c-date">2014.04.07</td></tr>
+      <tr><td class="c-id">R·83</td><td class="c-title">First Look: Kerlin BBQ<small>A trailer on Cesar Chavez quietly raising the bar.</small></td><td class="c-cat">Food</td><td class="c-date">2014.02.20</td></tr>
+      <tr><td class="c-id">R·80</td><td class="c-title">Must-Try: Austin Land &amp; Cattle Company<small>An old-school steakhouse that still earns its char.</small></td><td class="c-cat">Food</td><td class="c-date">2014.02.09</td></tr>
+      <tr><td class="c-id">R·71</td><td class="c-title">Ballet Austin's The Nutcracker<small>Dressing up, and the small pleasures of tradition.</small></td><td class="c-cat">Dance</td><td class="c-date">2013.12.26</td></tr>
+      <tr><td class="c-id">R·76</td><td class="c-title">Man Bites Dog: A Hot Dog in the City<small>Notes on a humble, perfect lunch.</small></td><td class="c-cat">Food</td><td class="c-date">2014.01.09</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ POST ============ -->
+<div class="divider">▼ Article Page — <span>The Grand Budapest Hotel</span></div>
+<article class="post wrap">
+  <div class="post-head">
+    <div class="cat">Reviews · Film · R·88</div>
+    <h1>The Grand Budapest Hotel</h1>
+    <div class="by"><span>By <b>Rod Machen</b></span><span>2014.03.27</span><span>~4 min</span></div>
+  </div>
+  <div class="post-body">
+    <p>My basic inclination is, like many, to like every new film from Wes Anderson. He had me at <em>Bottle Rocket</em>, and even the ones I haven't enjoyed as much — <em>The Life Aquatic</em>, <em>The Darjeeling Limited</em> — haven't pushed me away.</p>
+    <p>So I walked into <em>The Grand Budapest Hotel</em> predisposed to delight, which is a dangerous way to enter a theater. The danger here, it turns out, is irrelevant. This is Anderson at full bloom: a nested set of stories, a doomed concierge, and a lobby boy whose loyalty becomes the film's beating heart.</p>
+    <figure>
+      <div class="ph"><span>Ralph Fiennes as M. Gustave</span></div>
+      <figcaption>Ralph Fiennes as M. Gustave H., the concierge whose manners outlast his world.</figcaption>
+    </figure>
+    <p>The symmetry is doing real work, not just decoration. Every frame is a vitrine, and inside each one Anderson arranges grief and farce with the same careful hand. It should feel airless. It doesn't.</p>
+    <blockquote>The plot is a confection, but the feeling underneath is genuine loss — for a continent, a courtesy, a way of moving through the world.<cite>From the review</cite></blockquote>
+    <p>By the time the frame stories close, one inside the next, you understand that the whole elaborate machine exists to mourn something specific. That it manages to be hilarious on the way there is the trick only Anderson seems able to pull.</p>
+  </div>
+</article>
+
+<script>
+(function(){
+  var root=document.documentElement, L=document.getElementById('tL'), D=document.getElementById('tD');
+  function set(mode){
+    root.setAttribute('data-theme',mode);
+    L.setAttribute('aria-pressed', mode==='light');
+    D.setAttribute('aria-pressed', mode==='dark');
+  }
+  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  set(prefersDark ? 'dark' : 'light');
+  L.addEventListener('click', function(){ set('light'); });
+  D.addEventListener('click', function(){ set('dark'); });
+})();
+</script>
+</body>
+</html>

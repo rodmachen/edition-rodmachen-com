@@ -1,0 +1,174 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  /** Render the full front-page nameplate vs. the compact bar. */
+  home?: boolean;
+  /** Wrap the full nameplate in <h1> (true only when it is the page heading). */
+  headingNameplate?: boolean;
+}
+
+const { home = false, headingNameplate = home } = Astro.props;
+
+const nav = [
+  { label: 'Newsletter', href: '/newsletter/' },
+  { label: 'Articles', href: '/articles/' },
+  { label: 'Reviews', href: '/reviews/' },
+  { label: 'Bylines', href: '/bylines/' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<header class:list={['masthead', { home }]}>
+  <div class="wrap">
+    <div class="kicker">
+      <span class="est">Est. 2013 &middot; Austin, Texas</span>
+      <span class="dateline">{year} Edition</span>
+      <ThemeToggle />
+    </div>
+
+    {home ? (
+      <>
+        {headingNameplate ? (
+          <h1 class="nameplate-h1"><a href="/" class="nameplate">Edition</a></h1>
+        ) : (
+          <div class="nameplate-h1"><a href="/" class="nameplate">Edition</a></div>
+        )}
+        <p class="subhead">Rod Machen &middot; Writing on Film, Food, Music &amp; the Examined Life</p>
+      </>
+    ) : (
+      <a href="/" class="nameplate">Edition</a>
+    )}
+  </div>
+
+  <nav class="primary" aria-label="Sections">
+    <div class="wrap nav-inner">
+      {nav.map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
+    </div>
+  </nav>
+</header>
+
+<style>
+  .masthead {
+    border-bottom: 3px double var(--ink);
+    padding-top: 1.1rem;
+  }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-bottom: 0.85rem;
+  }
+
+  .kicker .est {
+    color: var(--accent);
+  }
+
+  .kicker .dateline {
+    /* push the toggle to the far right */
+    margin-left: auto;
+  }
+
+  .kicker :global(.theme-toggle) {
+    flex-shrink: 0;
+  }
+
+  .nameplate {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    color: var(--ink);
+  }
+
+  /* compact bar nameplate */
+  .masthead:not(.home) .nameplate {
+    font-size: clamp(1.9rem, 6vw, 2.6rem);
+    padding-bottom: 0.7rem;
+  }
+
+  /* home front-page nameplate */
+  .masthead.home {
+    padding-top: 1.6rem;
+  }
+
+  .nameplate-h1 {
+    margin: 0;
+    font-weight: inherit;
+  }
+
+  .masthead.home .nameplate {
+    font-weight: 300;
+    font-size: var(--display-lg);
+    text-align: center;
+    padding: 0.1rem 0 0.15rem;
+  }
+
+  .masthead.home .subhead {
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0;
+    padding: 0.6rem 0 1.1rem;
+  }
+
+  .nameplate:hover {
+    color: var(--accent);
+  }
+
+  /* --- Nav ----------------------------------------------------------- */
+  .primary {
+    border-top: var(--rule-thin) solid var(--ink);
+  }
+
+  .nav-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-nav);
+    text-transform: uppercase;
+  }
+
+  .nav-inner a {
+    position: relative;
+    padding: 0.7rem 1.1rem;
+    color: var(--ink-soft);
+    transition: color 0.2s;
+  }
+
+  .nav-inner a + a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 24%;
+    height: 52%;
+    border-left: var(--rule-thin) solid var(--rule);
+  }
+
+  .nav-inner a:hover {
+    color: var(--accent);
+  }
+
+  @media (max-width: 420px) {
+    .nav-inner a {
+      padding: 0.7rem 0.7rem;
+    }
+  }
+</style>

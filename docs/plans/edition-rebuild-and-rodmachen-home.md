@@ -33,7 +33,7 @@ This repo (edition.rodmachen.com, an Astro 5 static blog on Vercel) was set asid
 
 ---
 
-## Step 0: Branch, rename, and first commit
+## Step 0: Branch, rename, and first commit ✅
 
 Sonnet / low, tests-alongside (no tests), context-clear: no.
 

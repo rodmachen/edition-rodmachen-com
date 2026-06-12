@@ -1,0 +1,59 @@
+{
+  "findings": [
+    {
+      "severity": "non-blocking",
+      "location": "vercel.json:23-42 (new /article, /review, /essay, /byline rules) vs. lines 13-22 (existing /categories pair)",
+      "description": "The four new section redirects ship only the non-trailing-slash form (`/article/:path*` etc.). The site builds with `trailingSlash: 'always'`, so the canonical old URLs are trailing-slashed (e.g. `/article/foo/`). The pre-existing `/categories` redirect was deliberately written as BOTH `/categories/:path*/` and `/categories/:path*` — the author already found the trailing-slash sibling necessary. As written, a request to `/article/foo/` either resolves via a redirect chain (301 to `/articles/foo` then a second trailingSlash redirect to `/articles/foo/`) or, in the worst case, fails to match at all — a 404 and lost link equity on the exact URLs Step 5 called highest-risk for SEO. This is distinct from the deferred preview-curl check; it is a static asymmetry observable in the file.",
+      "suggestion": "Mirror the /categories pattern: add a trailing-slash variant for each new rule (e.g. `/article/:path*/` -> `/articles/:path*/` alongside `/article/:path*` -> `/articles/:path*`), then confirm with the deferred post-merge `curl -sI` on a real old `/article/<slug>/` URL."
+    },
+    {
+      "severity": "non-blocking",
+      "location": "src/utils/slugs.ts:59-86 (CATEGORY_CONFIG.accent + its comment) vs. src/styles/global.css:58-61",
+      "description": "The comment in slugs.ts claims the CATEGORY_CONFIG accents 'are the LIGHT-mode values of the global.css --accent-<section> tokens,' but two of them no longer match: article is `#b8654a` here vs `--accent-articles: #9c4d34` in global.css, and review is `#9a7b32` here vs `--accent-reviews: #7a6122`. Step 11 darkened the global.css tokens to reach WCAG AA but did not update slugs.ts. These hardcoded hex values feed the image-less placeholder tiles in PostCardList (rendered on /archive, /bylines, /topics/<tag>), so those tiles use the lighter, pre-AA colors, are not theme-aware (fixed hex in both light and dark), and contradict the rest of the section accenting. The misleading comment will also trip a future maintainer.",
+      "suggestion": "Reconcile the two sources of truth — update the article/review values in slugs.ts to #9c4d34 / #7a6122 (or, better, have the PostCardList placeholder read the `var(--accent-<section>)` token so light/dark stays automatic) and correct the comment."
+    },
+    {
+      "severity": "non-blocking",
+      "location": "src/components/PostCardList.astro and src/components/PostList.astro",
+      "description": "Archive, Bylines, and Topic-tag list bodies render through these two components, which were not migrated to the broadsheet system in Steps 9-10. They still use rounded 6px cards, hover box-shadows, and legacy `--font-sans` (now aliased to Fraunces), while the rest of Edition uses the sharp ruled catalog/ledger idiom. Rod's checkpoint decision was that Bylines/Archive/Topics 'share one uniform treatment that matches Edition.' The page headers were restyled (PageHeader), but the list bodies were not, leaving these pages visually half-migrated. Colors do adapt to dark mode via the legacy --color-* aliases, so this is cosmetic rather than broken.",
+      "suggestion": "Restyle PostCardList/PostList to the catalog/ledger idiom (or replace them on these pages with the section-page catalog markup) so Archive/Bylines/Topics match the Edition family per the checkpoint decision."
+    },
+    {
+      "severity": "non-blocking",
+      "location": "src/content.config.ts:19",
+      "description": "Plan Step 4 was to 'drop essay from schema enum and CATEGORY_CONFIG.' CATEGORY_CONFIG was updated, but the post `template` enum still allows the removed value: `z.enum(['article', 'essay', 'newsletter', 'review'])`. It is harmless today (no post sets `template`, and PostLayout falls back to the accent default for an unknown key), but it is dead config that contradicts the essay-folding decision.",
+      "suggestion": "Remove `'essay'` from the template enum: `z.enum(['article', 'newsletter', 'review'])`."
+    },
+    {
+      "severity": "non-blocking",
+      "location": "src/pages/[category]/index.astro (BaseLayout invocation, ~line 95) — newsletter/articles/reviews indexes",
+      "description": "The section index pages set a unique <title> (good — '/newsletter/' carries 'The Hangman Chronicles') but never pass a `description` prop to BaseLayout, so all three sections emit the generic site default meta description ('Edition — writing on food, film, arts, and Austin culture by Rod Machen.'). The newsletter index in particular loses an easy SEO win for 'The Hangman Chronicles.'",
+      "suggestion": "Add a per-section description to SECTION_META and pass it through to BaseLayout (e.g. newsletter: 'The Hangman Chronicles — a weekly dispatch by Rod Machen.')."
+    },
+    {
+      "severity": "non-blocking",
+      "location": "home/index.html (the <h1 class=\"name\"> nameplate)",
+      "description": "The hub nameplate is `Rod<span class=\"last\">Machen</span>`; the visual two-line break is CSS-only (`.last { display:block }`), so the computed accessible name of the page's sole <h1> is 'RodMachen' with no separator. Screen readers and search engines read it as one token.",
+      "suggestion": "Insert a space before the span or add `aria-label=\"Rod Machen\"` to the <h1> so the accessible name is 'Rod Machen'."
+    },
+    {
+      "severity": "non-blocking",
+      "location": "home/index.html (Destinations card 01, `<span class=\"t\">The Edition</span>`)",
+      "description": "The rodmachen.com hub labels the publication 'The Edition,' which contradicts Rod's Step 6 refinement that the site name is 'Edition,' not 'The Edition.' The edition site itself uses 'Edition' throughout (nameplate, footer colophon, page titles), so the hub is the lone place using the rejected form.",
+      "suggestion": "Rename the destination card title to 'Edition' for brand consistency."
+    },
+    {
+      "severity": "non-blocking",
+      "location": ".github/workflows/ci.yml:3-5",
+      "description": "`on: push` has no branch filter and is combined with `pull_request`, so every PR branch runs the full suite twice (once on push, once on the PR event) and every push to any branch triggers a run. Minor wasted CI minutes, not a correctness issue.",
+      "suggestion": "Scope the push trigger (e.g. `push: { branches: [master] }`) and/or add a `concurrency: { group: ${{ github.ref }}, cancel-in-progress: true }` block to drop redundant runs."
+    },
+    {
+      "severity": "non-blocking",
+      "location": "public/ (no robots.txt) — relative to the @astrojs/sitemap integration added in astro.config.mjs",
+      "description": "Step 11 added @astrojs/sitemap (emits sitemap-index.xml), but public/ contains only favicon.ico, the GSC verification file, and images — there is no robots.txt advertising the sitemap. The archived architecture plan called for a robots.txt per writing site. Not a regression (the old site had none either), and the sitemap still works once submitted to Search Console, but a robots.txt would aid discovery and is trivial.",
+      "suggestion": "Add public/robots.txt with `User-agent: *` / `Allow: /` and `Sitemap: https://edition.rodmachen.com/sitemap-index.xml`."
+    }
+  ],
+  "summary": "This is a solid, well-executed rebuild: CI is green, the 34-test suite passes, draft filtering via getPublishedPosts() is applied at every getCollection('posts') site, the singular->plural redirects and URL generation are centralized and consistent, the heading structure is a clean single-h1 on every page type (thanks to the variant system plus remark-demote-headings), and the theme system bootstraps render-blocking to avoid FOUC with proper focus/skip/reduced-motion a11y. No blocking issues were found — no build breakage, broken internal links, security exposure, or shipped drafts. The findings are all non-blocking polish: the highest-value one is the redirect rules omitting the trailing-slash variant that the existing /categories rules carry (an SEO risk worth confirming against the deferred curl check); the rest are a stale accent-token divergence between slugs.ts and the AA-corrected global.css, two list components (PostCardList/PostList) left in the pre-rebuild card style instead of the broadsheet idiom Rod asked for, a vestigial 'essay' value in the template enum, and minor SEO/branding/a11y/CI nits."
+}

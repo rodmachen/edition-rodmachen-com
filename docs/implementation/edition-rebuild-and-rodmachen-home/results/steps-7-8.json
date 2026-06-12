@@ -1,0 +1,30 @@
+{
+  "steps": [7, 8],
+  "status": "success",
+  "per_step": {
+    "7": {
+      "status": "success",
+      "commit": "592191f",
+      "fouc_strategy": "Synchronous inline <script is:inline> in <head> reads localStorage('theme') and sets data-theme on <html> before any background-painting CSS loads; verified in dist/index.html that the inline script (offset 339) precedes the bundled stylesheet link (offset 5089). CSS provides a prefers-color-scheme fallback for no-JS."
+    },
+    "8": {
+      "status": "success",
+      "commit": "a819b9b"
+    }
+  },
+  "ci_run_url": "https://github.com/rodmachen/edition-rodmachen-com/actions/runs/27398945215",
+  "decisions": [
+    "Header is a single shared masthead with a variant='home' prop: compact 'Edition' nameplate + nav + ThemeToggle on inner pages, full broadsheet nameplate + subhead on home. Avoids a duplicate giant title while keeping the home page faithful to option E.",
+    "Legacy --color-* CSS variables are aliased onto the new token system in global.css so not-yet-restyled pages (archive, topics, post, about/contact) render coherently in both light and dark immediately, ahead of Steps 9-10.",
+    "Per-section accent tokens defined as a warm-palette family (newsletter=oxblood, articles=clay, reviews=ochre/gold, bylines=taupe) with light + dark variants; CATEGORY_CONFIG.accent values realigned to the light-mode token values.",
+    "ThemeToggle is an in-flow Day/Night segmented control placed in the masthead kicker row (not fixed-position as in the mockup), persisting to localStorage and updating aria-pressed + theme-color.",
+    "Home nameplate promoted to the page <h1> for heading semantics (one h1, three h2 sections); BaseLayout renders an unconstrained <main> on home so full-bleed sections (bylines strip) work while inner pages keep <main class='container'>.",
+    "Catalog index IDs are generated from each section's chronological position (newsletter №NNN, articles A·NN, reviews R·NN); meta category derived from the post's first tag, falling back to a per-section default (Dispatch/Essay/Review). Dates shown in dotted mono (YYYY.MM.DD)."
+  ],
+  "assumptions": [
+    "Site name rendered as 'Edition' everywhere (corrected from the mockup's 'The Edition'); the masthead kicker shows 'Est. 2013 · Austin, Texas'.",
+    "Each Big 3 block shows up to 5 recent entries with the first as a Fraunces 'lead' item; subtitle shown only on the lead item.",
+    "Topic chips are the 9 most-used tags across published posts; quiet archive link shows total entry count (posts + bylines)."
+  ],
+  "blockers": []
+}

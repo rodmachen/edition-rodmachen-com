@@ -1,0 +1,26 @@
+{
+  "step": "6b",
+  "status": "success",
+  "commit": "c4ea400deb124039be58e0454b7154ef3043b5e2",
+  "options": [
+    {
+      "file": "edition-option-d.html",
+      "name": "The Night Archive (index-led hybrid)",
+      "summary": "Starts from Option B's bones — three sticky-headed streams, a tabular review ledger, indexed IDs, dark by default — but renders them in Option A's literary voice: Fraunces serif display for masthead and headlines, Newsreader for prose, a warm ink-on-paper-at-night palette, and an ember/oxblood accent replacing B's acid citron. Spline Sans Mono survives only as metadata flavor (dates, IDs, catalog labels). Reads as a writer's archive kept after dark rather than a developer dashboard; no engineering-manager framing."
+    },
+    {
+      "file": "edition-option-e.html",
+      "name": "The Ledger Broadsheet (broadsheet-led hybrid)",
+      "summary": "Starts from Option A's literary front page — double-rule masthead, Fraunces over a Newsreader column, cream paper, oxblood accent, light by default — but rebuilds the listings on B's structural devices: every item carries a numbered index (issue/catalog ID), the Reviews section is a ruled ledger table, and dates, categories, and IDs are set in Spline Sans Mono for an archival, accounted-for feel. The voice stays a writer's broadsheet; the spine underneath is a catalog."
+    }
+  ],
+  "decisions": [
+    "Both hybrids fuse A (literary broadsheet) and B (catalog/index) per Rod's checkpoint, since he picked B as his favorite and wanted A+B blends.",
+    "Removed all engineering-manager / writer-who-codes / terminal rhetoric from copy; edition is positioned purely as the writing publication (film, TV, music, food, culture). The technical identity is deferred to code.rodmachen.com.",
+    "Kept monospace as a typographic flavor only — restricted to metadata (dates, IDs, categories, catalog labels) in both, never as the body or positioning register.",
+    "Replaced B's acid-citron accent with an ember/oxblood family in Option D to carry A's warmer literary palette into the dark theme.",
+    "Reused round-1 real content (The Grand Budapest Hotel post, same Big 3 listings and bylines) so D and E compare directly against A and B.",
+    "D keeps dark default; E keeps light default — preserving each parent's polarity so Rod can compare the literary voice in both light and dark."
+  ],
+  "blockers": []
+}
