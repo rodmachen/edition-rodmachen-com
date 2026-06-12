@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import PostCardList from '../../components/PostCardList.astro';
-import { getPostCategory, CATEGORY_CONFIG, postToListItem } from '../../utils/posts';
+import { getPostCategory, CATEGORY_CONFIG, postToListItem, getPublishedPosts } from '../../utils/posts';
 
 export const getStaticPaths = (async () => {
   return Object.keys(CATEGORY_CONFIG)
@@ -18,7 +18,7 @@ export const getStaticPaths = (async () => {
 const { category } = Astro.props;
 const config = CATEGORY_CONFIG[category];
 
-const posts = await getCollection('posts');
+const posts = getPublishedPosts(await getCollection('posts'));
 const filtered = posts
   .filter((p) => getPostCategory(p.data.category) === category)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());

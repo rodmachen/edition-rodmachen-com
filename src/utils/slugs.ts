@@ -40,3 +40,41 @@ export function getPostsByCategory<T extends PostLike>(posts: T[]): Record<strin
   }
   return grouped;
 }
+
+type PublishableLike = {
+  data: {
+    published?: boolean;
+    [key: string]: unknown;
+  };
+};
+
+export function getPublishedPosts<T extends PublishableLike>(posts: T[]): T[] {
+  return posts.filter((p) => p.data.published !== false);
+}
+
+export const CATEGORY_CONFIG: Record<string, { label: string; description: string; accent: string; path: string }> = {
+  newsletter: {
+    label: 'Newsletter',
+    description: 'The Hangman Chronicles',
+    accent: '#117a65',
+    path: 'newsletter',
+  },
+  byline: {
+    label: 'Bylines',
+    description: 'Published at external outlets',
+    accent: '#2e4057',
+    path: 'bylines',
+  },
+  article: {
+    label: 'Articles',
+    description: 'Long-form writing and original pieces',
+    accent: '#1a5276',
+    path: 'articles',
+  },
+  review: {
+    label: 'Reviews',
+    description: 'Arts and Food reviews',
+    accent: '#b9770e',
+    path: 'reviews',
+  },
+};

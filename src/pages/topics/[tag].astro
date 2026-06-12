@@ -4,11 +4,11 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import PostCardList from '../../components/PostCardList.astro';
-import { postToListItem, bylineToListItem } from '../../utils/posts';
+import { postToListItem, bylineToListItem, getPublishedPosts } from '../../utils/posts';
 import type { ListItem } from '../../utils/posts';
 
 export const getStaticPaths = (async () => {
-  const posts = await getCollection('posts');
+  const posts = getPublishedPosts(await getCollection('posts'));
   const bylines = await getCollection('bylines');
 
   const tagSet = new Set<string>();
@@ -30,7 +30,7 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { tag } = Astro.props;
-const posts = await getCollection('posts');
+const posts = getPublishedPosts(await getCollection('posts'));
 const bylines = await getCollection('bylines');
 
 const items: ListItem[] = [

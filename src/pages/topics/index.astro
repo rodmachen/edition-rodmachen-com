@@ -2,8 +2,9 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
+import { getPublishedPosts } from '../../utils/posts';
 
-const posts = await getCollection('posts');
+const posts = getPublishedPosts(await getCollection('posts'));
 const bylines = await getCollection('bylines');
 
 const tagCounts = new Map<string, number>();

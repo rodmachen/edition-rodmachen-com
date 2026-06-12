@@ -5,6 +5,8 @@ import {
   formatDate,
   extractFirstImage,
   getPostsByCategory,
+  getPublishedPosts,
+  CATEGORY_CONFIG,
 } from './slugs';
 
 describe('getPostSlug', () => {
@@ -123,5 +125,57 @@ describe('getPostsByCategory', () => {
 
   it('returns an empty object for an empty input array', () => {
     expect(getPostsByCategory([])).toEqual({});
+  });
+});
+
+describe('CATEGORY_CONFIG', () => {
+  it('does not contain an essay category', () => {
+    expect(Object.keys(CATEGORY_CONFIG)).not.toContain('essay');
+  });
+
+  it('maps article to plural path "articles"', () => {
+    expect(CATEGORY_CONFIG['article'].path).toBe('articles');
+  });
+
+  it('maps review to plural path "reviews"', () => {
+    expect(CATEGORY_CONFIG['review'].path).toBe('reviews');
+  });
+
+  it('maps newsletter to path "newsletter"', () => {
+    expect(CATEGORY_CONFIG['newsletter'].path).toBe('newsletter');
+  });
+
+  it('maps byline to plural path "bylines"', () => {
+    expect(CATEGORY_CONFIG['byline'].path).toBe('bylines');
+  });
+});
+
+describe('getPublishedPosts', () => {
+  const makePost = (id: string, published?: boolean) => ({
+    id,
+    data: { date: new Date(), title: id, published },
+  });
+
+  it('filters out posts with published === false', () => {
+    const posts = [makePost('draft', false), makePost('live', true)];
+    const result = getPublishedPosts(posts);
+    expect(result).toHaveLength(1);
+    expect(result[0].id).toBe('live');
+  });
+
+  it('keeps posts with published === undefined', () => {
+    const posts = [makePost('no-flag'), makePost('draft', false)];
+    const result = getPublishedPosts(posts);
+    expect(result).toHaveLength(1);
+    expect(result[0].id).toBe('no-flag');
+  });
+
+  it('keeps posts with published === true', () => {
+    const posts = [makePost('published', true)];
+    expect(getPublishedPosts(posts)).toHaveLength(1);
+  });
+
+  it('returns empty array for empty input', () => {
+    expect(getPublishedPosts([])).toEqual([]);
   });
 });
