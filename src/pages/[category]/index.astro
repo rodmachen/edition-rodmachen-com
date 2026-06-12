@@ -4,23 +4,23 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import PostCardList from '../../components/PostCardList.astro';
-import { getPostCategory, CATEGORY_CONFIG, postToListItem, getPublishedPosts } from '../../utils/posts';
+import { getPostCategory, getCategoryPath, CATEGORY_CONFIG, postToListItem, getPublishedPosts } from '../../utils/posts';
 
 export const getStaticPaths = (async () => {
-  return Object.keys(CATEGORY_CONFIG)
-    .filter((key) => key !== 'byline')
-    .map((key) => ({
-      params: { category: key },
-      props: { category: key },
+  return Object.entries(CATEGORY_CONFIG)
+    .filter(([key]) => key !== 'byline')
+    .map(([key, config]) => ({
+      params: { category: config.path },
+      props: { categoryKey: key },
     }));
 }) satisfies GetStaticPaths;
 
-const { category } = Astro.props;
-const config = CATEGORY_CONFIG[category];
+const { categoryKey } = Astro.props;
+const config = CATEGORY_CONFIG[categoryKey];
 
 const posts = getPublishedPosts(await getCollection('posts'));
 const filtered = posts
-  .filter((p) => getPostCategory(p.data.category) === category)
+  .filter((p) => getPostCategory(p.data.category) === categoryKey)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const items = filtered.map(postToListItem);

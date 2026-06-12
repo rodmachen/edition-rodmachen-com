@@ -52,6 +52,10 @@ export function getPublishedPosts<T extends PublishableLike>(posts: T[]): T[] {
   return posts.filter((p) => p.data.published !== false);
 }
 
+export function getCategoryPath(category: string): string {
+  return CATEGORY_CONFIG[category]?.path ?? category;
+}
+
 export const CATEGORY_CONFIG: Record<string, { label: string; description: string; accent: string; path: string }> = {
   newsletter: {
     label: 'Newsletter',

@@ -1,7 +1,7 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import { getCollection } from 'astro:content';
-import { getPostSlug, getPostCategory, getPublishedPosts } from '../utils/posts';
+import { getPostSlug, getPostCategory, getCategoryPath, getPublishedPosts } from '../utils/posts';
 
 export async function GET(context: APIContext) {
   const posts = getPublishedPosts(await getCollection('posts'));
@@ -13,7 +13,7 @@ export async function GET(context: APIContext) {
     site: context.site!,
     items: sorted.map((post) => {
       const slug = getPostSlug(post.id, post.data);
-      const category = getPostCategory(post.data.category);
+      const category = getCategoryPath(getPostCategory(post.data.category));
       return {
         title: post.data.title,
         pubDate: post.data.date,

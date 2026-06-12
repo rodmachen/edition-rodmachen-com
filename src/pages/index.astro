@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getPostSlug, getPostCategory, getPostsByCategory, getPublishedPosts, CATEGORY_CONFIG } from '../utils/posts';
+import { getPostSlug, getPostCategory, getCategoryPath, getPostsByCategory, getPublishedPosts, CATEGORY_CONFIG } from '../utils/posts';
 
 const posts = getPublishedPosts(await getCollection('posts'));
 const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -36,7 +36,7 @@ const gridCards: GridCard[] = Object.entries(CATEGORY_CONFIG).map(([key, config]
       label: config.label,
       description: config.description,
       accent: config.accent,
-      href: '/byline/',
+      href: '/bylines/',
       count: sortedBylines.length,
       items,
       comingSoon: false,
@@ -47,7 +47,7 @@ const gridCards: GridCard[] = Object.entries(CATEGORY_CONFIG).map(([key, config]
   const items = catPosts.slice(0, 5).map((post) => ({
     title: post.data.title || getPostSlug(post.id, post.data),
     subtitle: post.data.subTitle,
-    href: `/${getPostCategory(post.data.category)}/${getPostSlug(post.id, post.data)}/`,
+    href: `/${getCategoryPath(getPostCategory(post.data.category))}/${getPostSlug(post.id, post.data)}/`,
   }));
 
   return {
@@ -55,7 +55,7 @@ const gridCards: GridCard[] = Object.entries(CATEGORY_CONFIG).map(([key, config]
     label: config.label,
     description: config.description,
     accent: config.accent,
-    href: `/${key}/`,
+    href: `/${config.path}/`,
     count: catPosts.length,
     items,
     comingSoon: catPosts.length === 0,
@@ -66,7 +66,7 @@ const gridCards: GridCard[] = Object.entries(CATEGORY_CONFIG).map(([key, config]
 const allItems = [
   ...sorted.map((post) => ({
     title: post.data.title || getPostSlug(post.id, post.data),
-    href: `/${getPostCategory(post.data.category)}/${getPostSlug(post.id, post.data)}/`,
+    href: `/${getCategoryPath(getPostCategory(post.data.category))}/${getPostSlug(post.id, post.data)}/`,
     date: post.data.date,
     external: false,
   })),

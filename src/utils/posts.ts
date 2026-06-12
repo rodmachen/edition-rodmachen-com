@@ -1,7 +1,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { getCldImageUrl } from 'astro-cloudinary/helpers';
-import { getPostSlug, getPostCategory, extractFirstImage } from './slugs';
-export { getPostSlug, getPostCategory, formatDate, extractFirstImage, getPostsByCategory, getPublishedPosts, CATEGORY_CONFIG } from './slugs';
+import { getPostSlug, getPostCategory, getCategoryPath, extractFirstImage } from './slugs';
+export { getPostSlug, getPostCategory, formatDate, extractFirstImage, getPostsByCategory, getPublishedPosts, getCategoryPath, CATEGORY_CONFIG } from './slugs';
 
 export type ListItem = {
   type: 'post' | 'byline';
@@ -46,7 +46,7 @@ export function postToListItem(p: CollectionEntry<'posts'>): ListItem {
     date: p.data.date,
     title: p.data.title || slug,
     subtitle: p.data.subTitle,
-    href: `/${cat}/${slug}/`,
+    href: `/${getCategoryPath(cat)}/${slug}/`,
     category: cat,
     tags: p.data.tags || [],
     image,

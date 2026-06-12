@@ -6,6 +6,7 @@ import {
   extractFirstImage,
   getPostsByCategory,
   getPublishedPosts,
+  getCategoryPath,
   CATEGORY_CONFIG,
 } from './slugs';
 
@@ -177,5 +178,27 @@ describe('getPublishedPosts', () => {
 
   it('returns empty array for empty input', () => {
     expect(getPublishedPosts([])).toEqual([]);
+  });
+});
+
+describe('getCategoryPath', () => {
+  it('returns "articles" for article', () => {
+    expect(getCategoryPath('article')).toBe('articles');
+  });
+
+  it('returns "reviews" for review', () => {
+    expect(getCategoryPath('review')).toBe('reviews');
+  });
+
+  it('returns "newsletter" for newsletter', () => {
+    expect(getCategoryPath('newsletter')).toBe('newsletter');
+  });
+
+  it('returns "bylines" for byline', () => {
+    expect(getCategoryPath('byline')).toBe('bylines');
+  });
+
+  it('falls back to the category key for unknown categories', () => {
+    expect(getCategoryPath('unknown')).toBe('unknown');
   });
 });
