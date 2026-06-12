@@ -16,7 +16,7 @@ const posts = defineCollection({
       if (Array.isArray(val)) return val[0] || 'article';
       return val || 'article';
     }),
-    template: z.enum(['article', 'essay', 'newsletter', 'review']).optional(),
+    template: z.enum(['article', 'newsletter', 'review']).optional(),
     tags: tagTransform,
     date: z.coerce.date(),
     published: z.boolean().optional(),

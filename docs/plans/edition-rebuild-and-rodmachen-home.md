@@ -198,7 +198,7 @@ Document the two-site repo layout (`/` = edition Astro app, `home/` = rodmachen.
 
 - **Verify:** CI green on the PR; README renders correctly on GitHub.
 
-## Step 15: Fix review feedback
+## Step 15: Fix review feedback ✅
 
 - **Model/effort:** Sonnet / medium — scope depends on findings; default for review follow-up.
 - **Context-clear:** no

@@ -56,33 +56,33 @@ export function getCategoryPath(category: string): string {
   return CATEGORY_CONFIG[category]?.path ?? category;
 }
 
-// Per-section accents are the LIGHT-mode values of the global.css
-// --accent-<section> tokens (dark variants live in global.css). Keeping them
-// here lets components that can't read CSS vars (e.g. inline placeholder
-// backgrounds) stay aligned with the token system.
+// Per-section accents mirror the LIGHT-mode values of global.css
+// --accent-<section> tokens exactly (dark variants live in global.css only).
+// These feed inline placeholder backgrounds in components that can't read
+// CSS vars; keep in sync whenever global.css tokens are updated.
 export const CATEGORY_CONFIG: Record<string, { label: string; description: string; accent: string; path: string }> = {
   newsletter: {
     label: 'Newsletter',
     description: 'The Hangman Chronicles',
-    accent: '#8a2b1f', // oxblood
+    accent: '#8a2b1f', // --accent-newsletter
     path: 'newsletter',
   },
   byline: {
     label: 'Bylines',
     description: 'Published at external outlets',
-    accent: '#6f6450', // muted taupe
+    accent: '#6f6450', // --accent-bylines
     path: 'bylines',
   },
   article: {
     label: 'Articles',
     description: 'Long-form writing and original pieces',
-    accent: '#b8654a', // clay
+    accent: '#9c4d34', // --accent-articles
     path: 'articles',
   },
   review: {
     label: 'Reviews',
     description: 'Arts and Food reviews',
-    accent: '#9a7b32', // ochre/gold
+    accent: '#7a6122', // --accent-reviews
     path: 'reviews',
   },
 };

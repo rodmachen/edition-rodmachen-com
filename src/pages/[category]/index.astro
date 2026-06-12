@@ -40,6 +40,7 @@ function titleCase(s: string): string {
 
 type SectionMeta = {
   pageTitle: string;
+  description: string;
   h1: string;
   lede: string;
   accentVar: string;
@@ -49,6 +50,7 @@ type SectionMeta = {
 const SECTION_META: Record<string, SectionMeta> = {
   newsletter: {
     pageTitle: 'The Hangman Chronicles | Edition',
+    description: 'The Hangman Chronicles — a weekly dispatch by Rod Machen on culture, arts, and Austin life.',
     h1: 'The Hangman Chronicles',
     lede: 'A weekly dispatch by Rod Machen',
     accentVar: 'var(--accent-newsletter)',
@@ -56,6 +58,7 @@ const SECTION_META: Record<string, SectionMeta> = {
   },
   article: {
     pageTitle: `${config.label} | Edition`,
+    description: 'Long-form writing, essays, and original pieces by Rod Machen.',
     h1: config.label,
     lede: 'Essays & Notes',
     accentVar: 'var(--accent-articles)',
@@ -63,6 +66,7 @@ const SECTION_META: Record<string, SectionMeta> = {
   },
   review: {
     pageTitle: `${config.label} | Edition`,
+    description: 'Film, TV, and food reviews by Rod Machen, published in Edition.',
     h1: config.label,
     lede: 'Film · TV · Food',
     accentVar: 'var(--accent-reviews)',
@@ -72,6 +76,7 @@ const SECTION_META: Record<string, SectionMeta> = {
 
 const meta = SECTION_META[categoryKey] ?? {
   pageTitle: `${config.label} | Edition`,
+  description: config.description,
   h1: config.label,
   lede: config.description,
   accentVar: 'var(--accent)',
@@ -93,7 +98,7 @@ const entries = filtered.map((post, i) => {
 });
 ---
 
-<BaseLayout title={meta.pageTitle} variant="section">
+<BaseLayout title={meta.pageTitle} description={meta.description} variant="section">
   <div class="section-page" style={`--sec-accent: ${meta.accentVar}`}>
 
     <header class="sec-masthead">

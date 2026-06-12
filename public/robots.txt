@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://edition.rodmachen.com/sitemap-index.xml

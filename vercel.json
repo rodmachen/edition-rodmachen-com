@@ -21,8 +21,18 @@
       "permanent": true
     },
     {
+      "source": "/article/:path*/",
+      "destination": "/articles/:path*/",
+      "permanent": true
+    },
+    {
       "source": "/article/:path*",
       "destination": "/articles/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/review/:path*/",
+      "destination": "/reviews/:path*/",
       "permanent": true
     },
     {
@@ -31,8 +41,18 @@
       "permanent": true
     },
     {
+      "source": "/essay/:path*/",
+      "destination": "/articles/:path*/",
+      "permanent": true
+    },
+    {
       "source": "/essay/:path*",
       "destination": "/articles/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/byline/:path*/",
+      "destination": "/bylines/:path*/",
       "permanent": true
     },
     {

@@ -10,26 +10,26 @@ interface Props {
 const { items, showTags = true } = Astro.props;
 ---
 
-<ul class="post-list">
+<ul class="catalog">
   {items.map((item) => {
     const date = formatDate(item.date);
     return (
       <li>
         <time>{date}</time>
-        <div class="post-info">
-          <div class="post-title-row">
+        <div class="entry-body">
+          <div class="entry-title-row">
             {item.type === 'byline' ? (
               <>
                 <a href={item.href} target="_blank" rel="noopener">{item.title}</a>
-                <span class="publication">&middot; {item.publication}</span>
+                <span class="entry-pub">&middot; {item.publication}</span>
               </>
             ) : (
               <a href={item.href}>{item.title}</a>
             )}
           </div>
-          {item.subtitle && <div class="post-subtitle">{item.subtitle}</div>}
+          {item.subtitle && <div class="entry-dek">{item.subtitle}</div>}
           {showTags && item.tags && item.tags.length > 0 && (
-            <div class="post-meta">
+            <div class="entry-tags">
               {item.tags.map((tag) => (
                 <a href={`/topics/${tag}/`} class="tag">{tag}</a>
               ))}
@@ -42,59 +42,73 @@ const { items, showTags = true } = Astro.props;
 </ul>
 
 <style>
-  .post-list {
+  .catalog {
     list-style: none;
     margin-bottom: 2.5rem;
+    border-top: 2px solid var(--ink);
   }
 
-  .post-list li {
+  .catalog li {
     display: flex;
     gap: 1.25rem;
     align-items: baseline;
-    padding: 0.6rem 0;
-    border-bottom: 1px solid var(--color-border);
+    padding: 0.65rem 0;
+    border-bottom: var(--rule-thin) solid var(--rule-soft);
   }
 
-  .post-list li:first-child {
-    border-top: 1px solid var(--color-border);
-  }
-
-  .post-list time {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    color: var(--color-text-light);
+  .catalog time {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--gold);
+    letter-spacing: 0.04em;
     white-space: nowrap;
     min-width: 5.5rem;
+    padding-top: 0.1rem;
   }
 
-  .post-info {
+  .entry-body {
     flex: 1;
+    min-width: 0;
   }
 
-  .post-title-row {
+  .entry-title-row {
     display: flex;
     gap: 0.5rem;
     align-items: baseline;
     flex-wrap: wrap;
   }
 
-  .post-title-row a {
-    font-size: 0.95rem;
+  .entry-title-row a {
+    font-family: var(--font-text);
+    font-weight: 600;
+    font-size: var(--text-base);
+    color: var(--ink);
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+    text-decoration: none;
   }
 
-  .publication {
-    font-family: var(--font-sans);
-    font-size: 0.8rem;
-    color: var(--color-text-light);
+  .entry-title-row a:hover {
+    color: var(--accent);
+    text-decoration: none;
   }
 
-  .post-subtitle {
-    font-size: 0.8rem;
-    color: var(--color-text-light);
+  .entry-pub {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .entry-dek {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
     font-style: italic;
+    margin-top: 0.15rem;
   }
 
-  .post-meta {
+  .entry-tags {
     display: flex;
     gap: 0.4rem;
     flex-wrap: wrap;
@@ -102,23 +116,25 @@ const { items, showTags = true } = Astro.props;
   }
 
   .tag {
-    font-family: var(--font-sans);
-    font-size: 0.7rem;
-    color: var(--color-text-light);
-    background: var(--color-bg-muted);
-    padding: 0.1rem 0.4rem;
-    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--ink-soft);
     text-decoration: none;
+    letter-spacing: 0.04em;
   }
 
   .tag:hover {
-    background: var(--color-bg-muted-hover);
+    color: var(--accent);
   }
 
   @media (max-width: 500px) {
-    .post-list li {
+    .catalog li {
       flex-direction: column;
-      gap: 0.15rem;
+      gap: 0.1rem;
+    }
+
+    .catalog time {
+      min-width: auto;
     }
   }
 </style>
