@@ -2,7 +2,7 @@
 title: The Grand Budapest Hotel
 subTitle: A Review
 author: Rod Machen
-category: article
+category: review
 date: 2014-03-27
 tags:
   - film

@@ -25,7 +25,8 @@ It seems like Mangum and Co. could do this once every few years and both give hi
 
 (Photographic apologies to the band: They requested no photography, but one of my seatmates captured the above photo. Sorry. Had to use it.)
 
-<hr>
+
+---
 
 Bonus section: If Neutral Milk Hotel has never crossed your sonic palette, here&#8217;s a three-course tasting menu that will help you decide whether future exploration is necessary. (Available in all the normal places.)
 

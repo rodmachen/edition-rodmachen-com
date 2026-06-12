@@ -17,3 +17,4 @@ Thumbs.db
 *.swo
 *~
 .vercel
+.claude/settings.local.json

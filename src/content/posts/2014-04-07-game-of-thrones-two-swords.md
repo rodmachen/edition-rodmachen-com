@@ -2,7 +2,7 @@
 title: Game of Thrones 
 subTitle: Two Swords
 author: Rod Machen
-category: article
+category: review
 date: 2014-04-07
 tags:
   - tv
