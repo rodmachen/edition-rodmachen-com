@@ -55,7 +55,7 @@ Unit tests for the pure helpers in `src/utils/posts.ts` (`getPostSlug`, `getPost
 
 - **Verify:** `npx vitest run` and `npm run build` green locally; `gh run watch` shows CI passing after push.
 
-## Step 2: Commit pending changes + docs cleanup
+## Step 2: Commit pending changes + docs cleanup ✅
 
 - **Model/effort:** Sonnet / low — (a) no ambiguity, (b) no third-party internals, (c) low risk, (d) trivially verifiable. Pure housekeeping.
 - **Context-clear:** no
